@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[Surveys]
+(
+	[id] INT IDENTITY(1, 1) NOT NULL,
+	[name] VARCHAR(255) NOT NULL,
+	[user] VARCHAR(255) NOT NULL,
+	[machine] VARCHAR(255) NOT NULL,
+	[start] DATETIME NOT NULL,
+	[end] DATETIME NULL,
+	CONSTRAINT [PK__Surveys] PRIMARY KEY ([id])
+)

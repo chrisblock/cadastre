@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E4CF6105-8378-4BCD-AA57-70D435857E4D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SchemaSurveyor.Etl</RootNamespace>
+    <AssemblyName>SchemaSurveyor.Etl</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Boo.Lang">
+      <HintPath>..\..\lib\Boo.0.9.4\lib\Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Compiler">
+      <HintPath>..\..\lib\Boo-Compiler.0.9.4\lib\Boo.Lang.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Parser">
+      <HintPath>..\..\lib\Boo-Compiler.0.9.4\lib\Boo.Lang.Parser.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\lib\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="FileHelpers">
+      <HintPath>..\..\lib\FileHelpers.2.0.0.0\lib\FileHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="FileHelpers.ExcelStorage">
+      <HintPath>..\..\lib\FileHelpers.2.0.0.0\lib\FileHelpers.ExcelStorage.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.Excel">
+      <HintPath>..\..\lib\FileHelpers.2.0.0.0\lib\Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.Office">
+      <HintPath>..\..\lib\FileHelpers.2.0.0.0\lib\Interop.Office.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Rhino.DSL">
+      <HintPath>..\..\lib\RhinoDSL.1.0.0\lib\Rhino.DSL.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Etl.Core">
+      <HintPath>..\..\lib\Rhino-Etl.1.2.3.0\lib\net35\Rhino.Etl.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Etl.Dsl">
+      <HintPath>..\..\lib\Rhino-Etl.1.2.3.0\lib\net35\Rhino.Etl.Dsl.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\..\lib\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Operations\BulkInsert\SqlModuleBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\CheckConstraintBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\ColumnBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\DatabasePermissionBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\DatabasePrincipalBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\DatabaseRoleMemberBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\DefaultConstraintBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\ForeignKeyBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\ForeignKeyColumnBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\FunctionBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\IndexBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\IndexColumnBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\KeyConstraintBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\LinkedLoginBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\ParameterBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\ProcedureBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\RemoteLoginBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\SchemaBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\ServerBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\SimpleBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\SqlLoginBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\SynonymBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\TableBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\TriggerBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\ViewBulkInsertOperation.cs" />
+    <Compile Include="Operations\Input\SqlModuleInputOperation.cs" />
+    <Compile Include="Operations\Input\CheckConstraintInputOperation.cs" />
+    <Compile Include="Operations\Input\ColumnInputOperation.cs" />
+    <Compile Include="Operations\Input\DatabasePermissionInputOperation.cs" />
+    <Compile Include="Operations\Input\DatabasePrincipalInputOperation.cs" />
+    <Compile Include="Operations\Input\DatabaseRoleMemberInputOperation.cs" />
+    <Compile Include="Operations\Input\DatabaseTypeMappingInputOperation.cs" />
+    <Compile Include="Operations\Input\DefaultConstraintInputOperation.cs" />
+    <Compile Include="Operations\Input\ForeignKeyColumnInputOperation.cs" />
+    <Compile Include="Operations\Input\ForeignKeyInputOperation.cs" />
+    <Compile Include="Operations\Input\FunctionInputOperation.cs" />
+    <Compile Include="Operations\Input\IndexColumnInputOperation.cs" />
+    <Compile Include="Operations\Input\IndexInputOperation.cs" />
+    <Compile Include="Operations\Input\KeyConstraintInputOperation.cs" />
+    <Compile Include="Operations\Input\LinkedLoginInputOperation.cs" />
+    <Compile Include="Operations\Input\ParameterInputOperation.cs" />
+    <Compile Include="Operations\Input\ProcedureInputOperation.cs" />
+    <Compile Include="Operations\Input\RemoteLoginInputOperation.cs" />
+    <Compile Include="Operations\Input\SchemaInputOperation.cs" />
+    <Compile Include="Operations\Input\ServerInputOperation.cs" />
+    <Compile Include="Operations\Input\SimpleInputCommandOperation.cs" />
+    <Compile Include="Operations\Input\SqlLoginInputOperation.cs" />
+    <Compile Include="Operations\Input\SynonymInputOperation.cs" />
+    <Compile Include="Operations\Input\TableInputOperation.cs" />
+    <Compile Include="Operations\Input\TriggerInputOperation.cs" />
+    <Compile Include="Operations\Input\ViewInputOperation.cs" />
+    <Compile Include="Operations\Transformation\AddDatabaseSurveyIdColumnOperation.cs" />
+    <Compile Include="Operations\Transformation\AddSurveyIdColumnOperation.cs" />
+    <Compile Include="Operations\Transformation\Md5HashColumnOperation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemaSurveyEtlProcess.cs" />
+    <Compile Include="SchemaSurveyorEtlRegistry.cs" />
+    <Compile Include="SimpleEtlProcess.cs" />
+    <Compile Include="Surveying\IDatabaseListFactory.cs" />
+    <Compile Include="Surveying\IDatabaseSchemaSurveyor.cs" />
+    <Compile Include="Surveying\Impl\DatabaseSchemaSurveyor.cs" />
+    <Compile Include="Surveying\Impl\FileDatabaseListFactory.cs" />
+    <Compile Include="Surveying\Impl\SchemaSurveyor.cs" />
+    <Compile Include="Surveying\Impl\StandardInputDatabaseListFactory.cs" />
+    <Compile Include="Surveying\Impl\StreamDatabaseListFactory.cs" />
+    <Compile Include="Surveying\ISchemaSurveyor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SchemaSurveyor.Core\SchemaSurveyor.Core.csproj">
+      <Project>{df344aa4-e583-4578-8487-b592e7cbed7c}</Project>
+      <Name>SchemaSurveyor.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

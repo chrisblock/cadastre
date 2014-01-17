@@ -1,0 +1,38 @@
+﻿@using Cadastre
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>@ViewBag.Title</title>
+		<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		@Styles.Render("~/Content/css")
+		@Scripts.Render("~/bundles/modernizr")
+	</head>
+	<body>
+		<header class="container">
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="navbar-header">
+					@Html.ActionLink("cadastre", "Index", "Surveys", null, new { @class = "navbar-brand" })
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						@Html.BuildNavListItem("Surveys", "Index", "Surveys")
+						@Html.BuildNavListItem("Create", "Create", "Surveys")
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<div id="body" class="container">
+			<section>
+				@RenderBody()
+			</section>
+		</div>
+
+		@Scripts.Render("~/bundles/jquery")
+		@Scripts.Render("~/bundles/knockout")
+		@RenderSection("scripts", required: false)
+	</body>
+</html>

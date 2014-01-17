@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>CommandLineArguments</id>
+    <version>2.0.0.0</version>
+    <title>CommandLineArguments</title>
+    <authors>Chris Block</authors>
+    <owners>Chris Block</owners>
+    <projectUrl>https://github.com/chrisblock/CommandLineArguments</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An attribute-based command line argument parser.</description>
+    <releaseNotes>Switched the implementation to provide an enumerable for the consumption of the configurator.</releaseNotes>
+    <copyright>Copyright 2013</copyright>
+    <language />
+  </metadata>
+</package>

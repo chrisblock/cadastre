@@ -1,0 +1,55 @@
+﻿@{
+	ViewBag.Title = "Surveys";
+}
+
+<h2>Surveys</h2>
+
+<table id="surveys" class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Survey</th>
+			<th>Host</th>
+			<th>User</th>
+			<th>Start</th>
+			<th>End</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: surveys">
+		<tr data-bind="click: $parent.go" class="cursor-hand">
+			<td data-bind="text: name"></td>
+			<td data-bind="text: machine"></td>
+			<td data-bind="text: user"></td>
+			<td data-bind="text: start"></td>
+			<td data-bind="text: end"></td>
+		</tr>
+	</tbody>
+</table>
+
+@section scripts {
+<script type="text/javascript">
+function SurveyListViewModel() {
+	var self = this,
+		surveys = ko.observableArray();
+
+	self.surveys = surveys;
+
+	self.go = function (survey, event) {
+		var url = '@Url.Action("Survey", "Surveys", new { surveyId = 0 })'.replace('0', survey.id);
+
+		document.location.href =  url;
+	};
+}
+
+$(document).ready(function () {
+	var model = new SurveyListViewModel();
+
+	ko.applyBindings(model, $('#surveys').get(0));
+
+	$.getJSON('@Url.Action("Surveys", "Surveys")').done(function (result, status, jqXHR) {
+		if (result && $.isArray(result)) {
+			model.surveys(result);
+		}
+	});
+});
+</script>
+}

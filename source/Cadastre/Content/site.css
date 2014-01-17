@@ -1,0 +1,7 @@
+﻿body {
+	overflow-y: scroll;
+}
+
+.cursor-hand {
+	cursor: pointer;
+}
