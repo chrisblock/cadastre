@@ -8,6 +8,14 @@ namespace SchemaSurveyor.Core.Surveys
 
 		Survey Get(int surveyId);
 
+		int Insert(string surveyName);
+
+		void Update(int surveyId);
+
 		IQueryable<DatabaseSurvey> GetDatabaseSurveys(int surveyId);
+
+		void InsertDatabaseSurvey(DatabaseSurvey databaseSurvey);
+
+		void UpdateDatabaseSurvey(DatabaseSurvey databaseSurvey);
 	}
 }

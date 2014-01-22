@@ -3,6 +3,7 @@ using System.Linq;
 
 using NUnit.Framework;
 
+using SchemaSurveyor.Core.Surveys.Impl;
 using SchemaSurveyor.Etl.Surveying;
 using SchemaSurveyor.Etl.Surveying.Impl;
 
@@ -42,7 +43,7 @@ namespace SchemaSurveyor.Etl.Tests
 
 			BuildTestDatabases();
 
-			_surveyor = new Surveying.Impl.SchemaSurveyor(new TestDatabaseListFactory(), new DatabaseSchemaSurveyor());
+			_surveyor = new Surveying.Impl.SchemaSurveyor(new TestDatabaseListFactory(), new SurveyRepository(), new DatabaseSchemaSurveyor());
 		}
 
 		[TearDown]

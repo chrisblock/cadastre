@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,25 +10,23 @@ namespace Cadastre
 {
 	public static class ValueProviderFactoriesConfig
 	{
-		public static void RegisterValueProviderFactories()
+		public static void RegisterValueProviderFactories(ValueProviderFactoryCollection factories)
 		{
-			//ModelBinders.Binders.DefaultBinder = new ModelBinder();
-
-			var formValueProviderFactory = ValueProviderFactories.Factories
+			var formValueProviderFactory = factories
 				.OfType<FormValueProviderFactory>()
 				.SingleOrDefault();
 
-			ValueProviderFactories.Factories.Remove(formValueProviderFactory);
+			factories.Remove(formValueProviderFactory);
 
-			ValueProviderFactories.Factories.Add(new FormValueProviderFactory());
+			factories.Add(new FormValueProviderFactory());
 
-			var jsonValueProviderFactory = ValueProviderFactories.Factories
+			var jsonValueProviderFactory = factories
 				.OfType<JsonValueProviderFactory>()
 				.SingleOrDefault();
 
-			ValueProviderFactories.Factories.Remove(jsonValueProviderFactory);
+			factories.Remove(jsonValueProviderFactory);
 
-			ValueProviderFactories.Factories.Add(new JsonDotNetValueProviderFactory());
+			factories.Add(new JsonDotNetValueProviderFactory());
 		}
 	}
 
@@ -119,7 +115,6 @@ namespace Cadastre
 	public class FormValueProvider : IValueProvider, IUnvalidatedValueProvider
 	{
 		private const string BracketExpressionString = @"\[([A-Za-z]+)\]";
-		private static readonly Regex BracketExpression = new Regex(BracketExpressionString);
 
 		private static IEnumerable<string> ParseKey(string key)
 		{

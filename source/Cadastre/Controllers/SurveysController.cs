@@ -6,8 +6,6 @@ using System.Web.Mvc;
 
 using Cadastre.Models;
 
-using SchemaSurveyor.Core;
-using SchemaSurveyor.Core.MissingObjects;
 using SchemaSurveyor.Core.Servers;
 using SchemaSurveyor.Core.Surveys;
 
@@ -17,13 +15,11 @@ namespace Cadastre.Controllers
 	{
 		private readonly ISurveyRepository _surveyRepository;
 		private readonly IDatabaseRepository _databaseRepository;
-		private readonly IMissingObjectRepository _missingObjectRepository;
 
-		public SurveysController(ISurveyRepository surveyRepository, IDatabaseRepository databaseRepository, IMissingObjectRepository missingObjectRepository)
+		public SurveysController(ISurveyRepository surveyRepository, IDatabaseRepository databaseRepository)
 		{
 			_surveyRepository = surveyRepository;
 			_databaseRepository = databaseRepository;
-			_missingObjectRepository = missingObjectRepository;
 		}
 
 		[HttpGet]

@@ -28,5 +28,6 @@ AS (
 			AND [ReferenceIndexes].[object_id] = [ReferenceTables].[object_id]
 			AND [ReferenceIndexes].[name] = [OtherIndexes].[name]
 	WHERE [ReferenceSurvey].[is_reference_schema] = 1
+	AND [OtherIndexes].[name] IS NOT NULL
 	AND [ReferenceIndexes].[name] IS NULL
 )

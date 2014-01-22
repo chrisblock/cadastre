@@ -81,6 +81,8 @@ namespace SchemaSurveyor.Etl
 				{
 					etlProcess.Dispose();
 				}
+
+				_etlProcesses.Clear();
 			}
 
 			// dispose unmanaged resources here

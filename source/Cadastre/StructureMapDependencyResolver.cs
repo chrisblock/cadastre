@@ -22,15 +22,15 @@ namespace Cadastre
 
 		public object GetService(Type serviceType)
 		{
-			object result = null;
+			object result;
 
 			if (serviceType.IsInterface || serviceType.IsAbstract)
 			{
-				result = ObjectFactory.TryGetInstance(serviceType);
+				result = _container.TryGetInstance(serviceType);
 			}
 			else
 			{
-				result = ObjectFactory.GetInstance(serviceType);
+				result = _container.GetInstance(serviceType);
 			}
 
 			return result;
@@ -38,7 +38,7 @@ namespace Cadastre
 
 		public IEnumerable<object> GetServices(Type serviceType)
 		{
-			return ObjectFactory.GetAllInstances(serviceType).Cast<object>();
+			return _container.GetAllInstances(serviceType).Cast<object>();
 		}
 	}
 }

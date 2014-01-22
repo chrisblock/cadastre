@@ -2,8 +2,8 @@
 (
 	[id] INT IDENTITY(1, 1) NOT NULL,
 	[survey] INT NOT NULL,
-	[server] VARCHAR(255),
-	[database] VARCHAR(255),
+	[instance] VARCHAR(255),
+	[database_name] VARCHAR(255),
 	[is_reference_schema] BIT NOT NULL,
 	[had_connection_error] BIT NULL,
 	[had_etl_error] BIT NULL,

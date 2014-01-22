@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchemaSurveyor.Core
 {
@@ -11,9 +7,16 @@ namespace SchemaSurveyor.Core
 	{
 		private const string SchemaSurveyConnectionStringName = "SchemaSurvey";
 
-		protected SqlConnection GetSchemaSurveyConnection()
+		protected SqlConnectionStringBuilder GetSchemaSurveyConnectionString()
 		{
 			var connectionString = ConnectionStrings.GetNamedConnectionString(SchemaSurveyConnectionStringName);
+
+			return connectionString;
+		}
+
+		protected IDbConnection GetSchemaSurveyConnection()
+		{
+			var connectionString = GetSchemaSurveyConnectionString();
 
 			var connection = new SqlConnection(connectionString.ToString());
 

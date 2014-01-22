@@ -15,7 +15,7 @@ namespace Cadastre
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
-			ValueProviderFactoriesConfig.RegisterValueProviderFactories();
+			ValueProviderFactoriesConfig.RegisterValueProviderFactories(ValueProviderFactories.Factories);
 		}
 	}
 }

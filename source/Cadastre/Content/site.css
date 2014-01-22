@@ -5,3 +5,24 @@
 .cursor-hand {
 	cursor: pointer;
 }
+
+.survey-details {
+	padding: 2em;
+	background-color: #CCCCCC;
+}
+
+.survey-results {
+	border: 1px solid #FFFFFF;
+	border-radius: 1em;
+	background-color: #FFFFFF;
+	min-height: 18em;
+	padding: 1.5em;
+}
+
+.db-object-list {
+	height: 15em;
+	overflow-y: scroll;
+	border-left: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+	border-right: 1px solid #DDDDDD;
+}

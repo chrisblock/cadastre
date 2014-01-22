@@ -6,22 +6,15 @@ using SchemaSurveyor.Core.Surveys;
 
 namespace SchemaSurveyor.Etl.Surveying.Impl
 {
-	public class DatabaseSchemaSurveyor : IDatabaseSchemaSurveyor
+	public class DatabaseSchemaSurveyor : BaseSchemaSurveyRepository, IDatabaseSchemaSurveyor
 	{
-		private const string SchemaSurveyConnectionStringName = "SchemaSurvey";
-
-		private readonly SqlConnectionStringBuilder _destination;
-
-		public DatabaseSchemaSurveyor()
-		{
-			_destination = ConnectionStrings.GetNamedConnectionString(SchemaSurveyConnectionStringName);
-		}
-
 		public DatabaseSurvey Survey(DatabaseSurvey database)
 		{
+			var destination = GetSchemaSurveyConnectionString();
+
 			var source = database.GetConnectionStringBuilder();
 
-			var etlProcess = new SchemaSurveyEtlProcess(database.Id, source, _destination);
+			var etlProcess = new SchemaSurveyEtlProcess(database.Id, source, destination);
 
 			var stopwatch = new Stopwatch();
 

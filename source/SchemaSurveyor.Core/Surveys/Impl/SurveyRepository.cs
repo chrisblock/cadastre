@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace SchemaSurveyor.Core.Surveys.Impl
@@ -15,7 +14,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand("SELECT [id], [name], [machine], [user], [start], [end] FROM [dbo].[Surveys]"))
+				using (var command = connection.CreateCommand("SELECT [id], [name], [machine_name], [user_name], [start_time], [end_time] FROM [dbo].[Surveys]"))
 				{
 					using (var reader = command.ExecuteReader())
 					{
@@ -27,10 +26,10 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 							{
 								Id = (int) reader["id"],
 								Name = (string) reader["name"],
-								Machine = (string) reader["machine"],
-								User = (string) reader["user"],
-								Start = (DateTime) reader["start"],
-								End = reader["end"] == DBNull.Value ? null : (DateTime?) reader["end"]
+								Machine = (string) reader["machine_name"],
+								User = (string) reader["user_name"],
+								Start = (DateTime) reader["start_time"],
+								End = reader["end_time"] == DBNull.Value ? null : (DateTime?) reader["end_time"]
 							};
 
 							surveys.Add(survey);
@@ -59,7 +58,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand("SELECT TOP 1 [id], [name], [machine], [user], [start], [end] FROM [dbo].[Surveys] WHERE [id] = @id"))
+				using (var command = connection.CreateCommand("SELECT TOP 1 [id], [name], [machine_name], [user_name], [start_time], [end_time] FROM [dbo].[Surveys] WHERE [id] = @id"))
 				{
 					command.AddParameter("id", surveyId);
 
@@ -69,12 +68,12 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 						{
 							result = new Survey
 							{
-								Id = (int)reader["id"],
-								Name = (string)reader["name"],
-								Machine = (string)reader["machine"],
-								User = (string)reader["user"],
-								Start = (DateTime)reader["start"],
-								End = (DateTime)reader["end"]
+								Id = (int) reader["id"],
+								Name = (string) reader["name"],
+								Machine = (string) reader["machine_name"],
+								User = (string) reader["user_name"],
+								Start = (DateTime) reader["start_time"],
+								End = reader["end_time"] == DBNull.Value ? null : (DateTime?) reader["end_time"]
 							};
 						}
 
@@ -88,6 +87,48 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			return result;
 		}
 
+		public int Insert(string surveyName)
+		{
+			int result;
+
+			using (var connection = GetSchemaSurveyConnection())
+			{
+				connection.Open();
+
+				using (var command = connection.CreateCommand("INSERT INTO [dbo].[Surveys] ([name], [user], [machine], [start]) VALUES (@name, @user, @machine, GETDATE()); SELECT CONVERT(INT, SCOPE_IDENTITY());"))
+				{
+					var userAndDomain = String.Format("{0}\\{1}", Environment.UserDomainName, Environment.UserName);
+
+					command.AddParameter("name", surveyName);
+					command.AddParameter("user", userAndDomain);
+					command.AddParameter("machine", Environment.MachineName);
+
+					result = (int)command.ExecuteScalar();
+				}
+
+				connection.Close();
+			}
+
+			return result;
+		}
+
+		public void Update(int surveyId)
+		{
+			using (var connection = GetSchemaSurveyConnection())
+			{
+				connection.Open();
+
+				using (var command = connection.CreateCommand("UPDATE [dbo].[Surveys] SET [end] = GETDATE() WHERE [id] = @survey"))
+				{
+					command.AddParameter("survey", surveyId);
+
+					command.ExecuteNonQuery();
+				}
+
+				connection.Close();
+			}
+		}
+
 		public IQueryable<DatabaseSurvey> GetDatabaseSurveys(int surveyId)
 		{
 			var result = Enumerable.Empty<DatabaseSurvey>().AsQueryable();
@@ -96,7 +137,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand("SELECT [id], [survey], [server], [database], [is_reference_schema], [had_connection_error], [had_etl_error], [duration] FROM [dbo].[DatabaseSurveys] WHERE [survey] = @surveyId"))
+				using (var command = connection.CreateCommand("SELECT [id], [survey], [instance], [database_name], [is_reference_schema], [had_connection_error], [had_etl_error], [duration] FROM [dbo].[DatabaseSurveys] WHERE [survey] = @surveyId"))
 				{
 					command.AddParameter("surveyId", surveyId);
 
@@ -110,8 +151,8 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 							{
 								Id = (int) reader["id"],
 								SurveyId = (int) reader["survey"],
-								Server = (string) reader["server"],
-								Database = (string) reader["database"],
+								Server = (string) reader["instance"],
+								Database = (string) reader["database_name"],
 								IsReferenceSchema = (bool) reader["is_reference_schema"],
 								HadConnectionError = (bool?) reader["had_connection_error"],
 								//HadEtlError = (bool?) reader["had_etl_error"],
@@ -134,6 +175,48 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			}
 
 			return result;
+		}
+
+		public void InsertDatabaseSurvey(DatabaseSurvey databaseSurvey)
+		{
+			using (var connection = GetSchemaSurveyConnection())
+			{
+				connection.Open();
+
+				using (var command = connection.CreateCommand("INSERT INTO [dbo].[DatabaseSurveys] ([survey], [server], [database], [is_reference_schema], [had_connection_error]) VALUES (@survey, @server, @database, @isReferenceSchema, @hadConnectionError); SELECT CONVERT(INT, SCOPE_IDENTITY());"))
+				{
+					command.AddParameter("survey", databaseSurvey.SurveyId);
+					command.AddParameter("server", databaseSurvey.Server);
+					command.AddParameter("database", databaseSurvey.Database);
+					command.AddParameter("isReferenceSchema", databaseSurvey.IsReferenceSchema);
+					command.AddParameter("hadConnectionError", databaseSurvey.HadConnectionError);
+
+					databaseSurvey.Id = (int) command.ExecuteScalar();
+				}
+
+				connection.Close();
+			}
+		}
+
+		public void UpdateDatabaseSurvey(DatabaseSurvey databaseSurvey)
+		{
+			using (var connection = GetSchemaSurveyConnection())
+			{
+				connection.Open();
+
+				using (var command = connection.CreateCommand("UPDATE [dbo].[DatabaseSurveys] SET [had_etl_error] = @hadEtlError, [duration] = @duration WHERE [survey] = @survey AND [server] = @server AND [database] = @database;"))
+				{
+					command.AddParameter("survey", databaseSurvey.SurveyId);
+					command.AddParameter("server", databaseSurvey.Server);
+					command.AddParameter("database", databaseSurvey.Database);
+					command.AddParameter("hadEtlError", databaseSurvey.HadEtlError);
+					command.AddParameter("duration", databaseSurvey.Duration);
+
+					command.ExecuteNonQuery();
+				}
+
+				connection.Close();
+			}
 		}
 	}
 }
