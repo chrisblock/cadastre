@@ -57,6 +57,23 @@
 						<div class="tab-content" data-bind="foreach: { data: tabs, as: 'tab' }">
 							<!-- ko foreach: { data: types, as: 'type' } -->
 							<div class="tab-pane db-object-list" data-bind="attr: { id: 'db-' + database.id() + '-' + tab.id() + '-' + type.id() }">
+								<!-- ko if: needsParentColumn -->
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>Table</th>
+											<th>Name</th>
+										</tr>
+									</thead>
+									<tbody data-bind="foreach: objects">
+										<tr>
+											<td data-bind="text: parent"></td>
+											<td data-bind="text: name"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- /ko -->
+								<!-- ko ifnot: needsParentColumn -->
 								<table class="table table-condensed">
 									<thead>
 										<tr>
@@ -69,6 +86,7 @@
 										</tr>
 									</tbody>
 								</table>
+								<!-- /ko -->
 							</div>
 							<!-- /ko -->
 						</div>
@@ -128,23 +146,29 @@
 		self.types = types;
 	}
 	
-	function DatabaseSurveyObjectType(t, o) {
+	function DatabaseSurveyObjectType(t) {
 		var self = this,
 			title = ko.observable(t),
 			id = ko.computed(function () {
 				return title().toLowerCase().replace(/\s+/g, '-');
 			}),
-			objects = ko.observableArray(o || []),
+			objects = ko.observableArray(),
 			isActive = ko.computed(function () {
 				var active = (objects().length === 0);
 
 				return active;
+			}),
+			needsParentColumn = ko.computed(function () {
+				var o = objects();
+
+				return ((o.length > 0) && (!!o[0].parent));
 			});
 
 		self.title = title;
 		self.id = id;
 		self.objects = objects;
 		self.isActive = isActive;
+		self.needsParentColumn = needsParentColumn;
 	}
 
 	function DatabaseSurvey(db) {
@@ -163,32 +187,26 @@
 				new DatabaseSurveyTab('Missing'),
 				new DatabaseSurveyTab('Extra')
 			]),
-			objectTypes = [
-				{ display: 'Columns', value: 'columns' },
-				{ display: 'Functions', value: 'functions' },
-				{ display: 'Indexes', value: 'indexes' },
-				{ display: 'Schemas', value: 'schemas' },
-				{ display: 'Servers', value: 'servers' },
-				{ display: 'Stored Procedures', value: 'storedProcedures' },
-				{ display: 'Synonyms', value: 'synonyms' },
-				{ display: 'Tables', value: 'tables' },
-				{ display: 'Triggers', value: 'triggers' },
-				{ display: 'Views', value: 'views' }
-			],
 			loadDetails = function () {
 				if (areDetailsLoaded === false) {
 					areDetailsLoaded = true;
 
-					$.each(tabs(), function (index, tab) {
+					$.each(tabs(), function (i, tab) {
 						var title = tab.title();
 
 						$.each(urls[title], function (type, url) {
+							var t = new DatabaseSurveyObjectType(type);
+
+							tab.types.push(t);
+
 							setTimeout(function () {
 								var actualUrl = url.replace(/databaseSurveyId/i, id());
 
 								$.getJSON(actualUrl).done(function (r, s, x) {
 									if (r && $.isArray(r)) {
-										tab.types.push(new DatabaseSurveyObjectType(type, r));
+										$.each(r, function (j, item) {
+											t.objects.push(item);
+										});
 									}
 								});
 							}, 0);
@@ -206,16 +224,7 @@
 		self.hadEtlError = hadEtlError;
 		self.duration = duration;
 		self.areDetailsVisible = areDetailsVisible;
-		self.objectTypes = objectTypes;
 		self.tabs = tabs;
-		self.missingObjects = {};
-		self.extraObjects = {};
-
-		$.each(objectTypes, function (index, item) {
-			var v = item.value;
-			self.missingObjects[v] = ko.observableArray();
-			self.extraObjects[v] = ko.observableArray();
-		});
 
 		self.toggleDetails = function() {
 			var detailsVisible = areDetailsVisible();
@@ -226,12 +235,6 @@
 		};
 	}
 
-	function processDatabase(urls, model, index, database) {
-		var db = new DatabaseSurvey(database);
-
-		model.databases.push(db);
-	}
-
 	$(document).ready(function() {
 		var model = new DatabaseSurveyListViewModel();
 
@@ -239,8 +242,10 @@
 
 		$.getJSON('@Url.Action("Databases", "Surveys", new { surveyId = @Model.Id })').done(function(result, status, jqXHR) {
 			if (result && $.isArray(result)) {
-				$.each(result, function(i, item) {
-					processDatabase(urls, model, i, item);
+				$.each(result, function (i, item) {
+					var db = new DatabaseSurvey(item);
+
+					model.databases.push(db);
 				});
 			}
 		});

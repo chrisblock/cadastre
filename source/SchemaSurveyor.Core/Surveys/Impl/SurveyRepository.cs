@@ -137,7 +137,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand("SELECT [id], [survey], [instance], [database_name], [is_reference_schema], [had_connection_error], [had_etl_error], [duration] FROM [dbo].[DatabaseSurveys] WHERE [survey] = @surveyId"))
+				using (var command = connection.CreateCommand("SELECT [id], [survey], [instance_name], [database_name], [is_reference_schema], [had_connection_error], [had_etl_error], [duration] FROM [dbo].[DatabaseSurveys] WHERE [survey] = @surveyId"))
 				{
 					command.AddParameter("surveyId", surveyId);
 
@@ -151,7 +151,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 							{
 								Id = (int) reader["id"],
 								SurveyId = (int) reader["survey"],
-								Server = (string) reader["instance"],
+								Server = (string) reader["instance_name"],
 								Database = (string) reader["database_name"],
 								IsReferenceSchema = (bool) reader["is_reference_schema"],
 								HadConnectionError = (bool?) reader["had_connection_error"],
