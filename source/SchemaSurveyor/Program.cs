@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 
 using CommandLineArguments;
@@ -14,8 +13,6 @@ namespace SchemaSurveyor
 	{
 		public static int Main(string[] args)
 		{
-			Debugger.Launch();
-
 			var exitCode = 1;
 
 			try
