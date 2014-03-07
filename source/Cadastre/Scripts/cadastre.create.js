@@ -92,7 +92,7 @@
 					referenceDatabase = json.referenceDatabase,
 					data = {
 						name: json.name,
-						databases: json.selectedDatabases.map(function (x, i) {
+						databases: json.databases.map(function (x, i) {
 							return {
 								server: x.server,
 								database: x.database,

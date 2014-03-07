@@ -95,7 +95,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand("INSERT INTO [dbo].[Surveys] ([name], [user], [machine], [start]) VALUES (@name, @user, @machine, GETDATE()); SELECT CONVERT(INT, SCOPE_IDENTITY());"))
+				using (var command = connection.CreateCommand("INSERT INTO [dbo].[Surveys] ([name], [user_name], [machine_name], [start_time]) VALUES (@name, @user, @machine, GETDATE()); SELECT CONVERT(INT, SCOPE_IDENTITY());"))
 				{
 					var userAndDomain = String.Format("{0}\\{1}", Environment.UserDomainName, Environment.UserName);
 
@@ -118,7 +118,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand("UPDATE [dbo].[Surveys] SET [end] = GETDATE() WHERE [id] = @survey"))
+				using (var command = connection.CreateCommand("UPDATE [dbo].[Surveys] SET [end_time] = GETDATE() WHERE [id] = @survey"))
 				{
 					command.AddParameter("survey", surveyId);
 
@@ -183,7 +183,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand("INSERT INTO [dbo].[DatabaseSurveys] ([survey], [server], [database], [is_reference_schema], [had_connection_error]) VALUES (@survey, @server, @database, @isReferenceSchema, @hadConnectionError); SELECT CONVERT(INT, SCOPE_IDENTITY());"))
+				using (var command = connection.CreateCommand("INSERT INTO [dbo].[DatabaseSurveys] ([survey], [instance_name], [database_name], [is_reference_schema], [had_connection_error]) VALUES (@survey, @server, @database, @isReferenceSchema, @hadConnectionError); SELECT CONVERT(INT, SCOPE_IDENTITY());"))
 				{
 					command.AddParameter("survey", databaseSurvey.SurveyId);
 					command.AddParameter("server", databaseSurvey.Server);
@@ -204,7 +204,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand("UPDATE [dbo].[DatabaseSurveys] SET [had_etl_error] = @hadEtlError, [duration] = @duration WHERE [survey] = @survey AND [server] = @server AND [database] = @database;"))
+				using (var command = connection.CreateCommand("UPDATE [dbo].[DatabaseSurveys] SET [had_etl_error] = @hadEtlError, [duration] = @duration WHERE [survey] = @survey AND [instance_name] = @server AND [database_name] = @database;"))
 				{
 					command.AddParameter("survey", databaseSurvey.SurveyId);
 					command.AddParameter("server", databaseSurvey.Server);
