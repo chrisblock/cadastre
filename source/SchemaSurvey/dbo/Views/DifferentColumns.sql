@@ -27,7 +27,7 @@ AS (
 			ON [OtherColumns].[database_survey] = [OtherSurvey].[id]
 			AND [OtherColumns].[object_id] = [OtherTables].[object_id]
 			AND [OtherColumns].[name] = [ReferenceColumns].[name]
-			AND CHECKSUM([OtherColumns].[system_type_id], [OtherColumns].[user_type_id], [OtherColumns].[is_identity], [OtherColumns].[is_nullable], [OtherColumns].[max_length], [OtherColumns].[scale], [OtherColumns].[precision])
-				!= CHECKSUM([ReferenceColumns].[system_type_id], [ReferenceColumns].[user_type_id], [ReferenceColumns].[is_identity], [ReferenceColumns].[is_nullable], [ReferenceColumns].[max_length], [ReferenceColumns].[scale], [OtherColumns].[precision])
+			AND BINARY_CHECKSUM([OtherColumns].[system_type_id], [OtherColumns].[user_type_id], [OtherColumns].[is_identity], [OtherColumns].[is_nullable], [OtherColumns].[max_length], [OtherColumns].[scale], [OtherColumns].[precision])
+				!= BINARY_CHECKSUM([ReferenceColumns].[system_type_id], [ReferenceColumns].[user_type_id], [ReferenceColumns].[is_identity], [ReferenceColumns].[is_nullable], [ReferenceColumns].[max_length], [ReferenceColumns].[scale], [OtherColumns].[precision])
 	WHERE [ReferenceSurvey].[is_reference_schema] = 1
 )

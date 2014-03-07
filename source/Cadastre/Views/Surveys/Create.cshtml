@@ -27,11 +27,11 @@
 		<div class="form-group">
 			<label for="database" class="col-md-2 control-label">Database: </label>
 			<div class="col-md-10">
-				<select id="database" class="form-control" name="Database" data-bind="options: availableDatabases, value: database"></select>
+				<select id="database" class="form-control" name="Database" multiple data-bind="options: availableDatabases, selectedOptions: selectedDatabases"></select>
 			</div>
 		</div>
 
-		@Html.Button("Add", new Dictionary<string, object> { { "id", "add-database" }, { "data-bind", "click: addDatabase" }, { "class", "btn btn-default pull-right" } })
+		@Html.Button("Add", new Dictionary<string, object> { { "id", "add-database" }, { "data-bind", "click: addSelectedDatabases" }, { "class", "btn btn-default pull-right" } })
 
 		<table id="server-list" class="table table-striped">
 			<thead>
@@ -41,7 +41,7 @@
 					<th>Reference Schema</th>
 				</tr>
 			</thead>
-			<tbody data-bind="foreach: selectedDatabases">
+			<tbody data-bind="foreach: databases">
 				<tr>
 					<td data-bind="text: server"></td>
 					<td data-bind="text: database"></td>
@@ -55,116 +55,9 @@
 }
 
 @section scripts {
-	<script type="text/javascript">
-		function CreateSurveyView() {
-			var self = this,
-				alreadyAdded = {},
-				name = ko.observable(),
-				server = ko.observable(),
-				database = ko.observable(),
-				availableServers = ko.observableArray(),
-				availableDatabases = ko.observableArray(),
-				selectedDatabases = ko.observableArray(),
-				referenceDatabase = ko.observable();
-
-			self.name = name;
-			self.server = server;
-			self.database = database;
-			self.availableServers = availableServers;
-			self.availableDatabases = availableDatabases;
-			self.selectedDatabases = selectedDatabases;
-			self.referenceDatabase = referenceDatabase;
-
-			server.subscribe(function (value) {
-				$.get('@Url.Action("Index", "Servers")' + '/' + value, function (data, status, jqXHR) {
-					availableDatabases.removeAll();
-
-					for (var i = 0, len = data.length; i < len; i++) {
-						availableDatabases.push(data[i].name);
-
-						if (i === 0) {
-							database(data[i].name);
-						}
-					}
-				});
-			});
-
-			self.addDatabase = function (model, e) {
-				e.preventDefault();
-				e.stopPropagation();
-
-				if (!referenceDatabase()) {
-					referenceDatabase('0');
-				}
-
-				var s = model.server(),
-					d = model.database(),
-					selectedDatabase = {
-						server: s,
-						database: d
-					};
-
-				if (alreadyAdded[s] === undefined) {
-					alreadyAdded[s] = {};
-				}
-				
-				if (alreadyAdded[s][d] === undefined) {
-					alreadyAdded[s][d] = true;
-
-					model.selectedDatabases.push(selectedDatabase);
-				}
-			};
-		}
-
-		$(document).ready(function () {
-			var model = new CreateSurveyView();
-
-			ko.applyBindings(model, $('#create-survey').get(0));
-
-			$.get('@Url.Action("Index", "Servers")').done(function (data, status, jqXHR) {
-				var servers = [];
-
-				for (var i = 0, len = data.length; i < len; i++) {
-					servers.push(data[i].name);
-				}
-
-				model.availableServers(servers);
-			});
-
-			$('#submit-survey').click(function (e) {
-				e.preventDefault();
-				e.stopPropagation();
-
-				var json = ko.toJS(ko.dataFor($('#create-survey').get(0))),
-					referenceDatabase = json.referenceDatabase,
-					data = {
-						name: json.name,
-						databases: json.selectedDatabases.map(function(x, i) {
-							return {
-								server: x.server,
-								database: x.database,
-								isReference: i === +referenceDatabase
-							};
-						})
-					};
-
-				$.post('@Url.Action("Request", "Surveys")', data).done(function (data, status, jqXHR) {
-					debugger;
-				});
-
-				@*
-				$.ajax('@Url.Action("Request", "Surveys")', {
-					contentType: 'application/json',
-					data: JSON.stringify(data),
-					processData: false,
-					type: 'POST'
-				}).done(function (data, status, jqXHR) {
-					debugger;
-				});
-				*@
-
-				return false;
-			});
-		});
-	</script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		cadastre.create.init('@Url.Action("Index", "Servers")', '@Url.Action("Request", "Surveys")', '#create-survey', '#submit-survey');
+	});
+</script>
 }

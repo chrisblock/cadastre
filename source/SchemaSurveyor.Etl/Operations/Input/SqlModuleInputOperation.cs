@@ -16,10 +16,9 @@ namespace SchemaSurveyor.Etl.Operations.Input
 			var stringBuilder = new StringBuilder();
 
 			stringBuilder.AppendLine("SELECT");
-			stringBuilder.AppendLine("	  @@SERVERNAME AS [server]");
-			stringBuilder.AppendLine("	, DB_NAME() as [database]");
-			stringBuilder.AppendLine("	, [object_id]");
-			stringBuilder.AppendLine("	, [definition]");
+			stringBuilder.AppendLine("	  [object_id]");
+			stringBuilder.AppendLine("	, DATALENGTH([definition]) AS [definition_length]");
+			stringBuilder.AppendLine("	, BINARY_CHECKSUM([definition]) AS [definition_checksum]");
 			stringBuilder.AppendLine("	, [uses_ansi_nulls]");
 			stringBuilder.AppendLine("	, [uses_quoted_identifier]");
 			stringBuilder.AppendLine("	, [is_schema_bound]");

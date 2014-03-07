@@ -13,10 +13,13 @@ namespace Cadastre
 		public static void RegisterValueProviderFactories(ValueProviderFactoryCollection factories)
 		{
 			var formValueProviderFactory = factories
-				.OfType<FormValueProviderFactory>()
+				.OfType<System.Web.Mvc.FormValueProviderFactory>()
 				.SingleOrDefault();
 
-			factories.Remove(formValueProviderFactory);
+			if (formValueProviderFactory != null)
+			{
+				factories.Remove(formValueProviderFactory);
+			}
 
 			factories.Add(new FormValueProviderFactory());
 

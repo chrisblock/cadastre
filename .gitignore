@@ -15,6 +15,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+ipch/
 
 *_i.c
 *_p.c
@@ -22,6 +23,7 @@ bld/
 *.ilk
 *.meta
 *.obj
+*.opensdf
 *.pch
 *.pdb
 *.pgc
@@ -38,6 +40,7 @@ bld/
 *.vssscc
 .builds
 *.pidb
+*.sdf
 *.svclog
 *.scc
 

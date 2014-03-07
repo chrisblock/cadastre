@@ -50,6 +50,7 @@ namespace SchemaSurveyor.Etl.Surveying.Impl
 			}
 
 			// TODO: for many databases, this is untenable
+			// TODO: should implement a queue (some kind of non-blocking queue would be awesome)
 			Parallel.ForEach(connectableDatabases, x =>
 			{
 				var databaseSurvey = _databaseSchemaSurveyor.Survey(x);

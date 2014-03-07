@@ -34,7 +34,8 @@ namespace SchemaSurveyor.Etl.Operations.BulkInsert
 		{
 			Schema["database_survey"] = typeof (int);
 			Schema["object_id"] = typeof (int);
-			Schema["definition"] = typeof (string);
+			Schema["definition_length"] = typeof (int);
+			Schema["definition_checksum"] = typeof (int);
 			Schema["uses_database_collation"] = typeof (bool?);
 			Schema["uses_ansi_nulls"] = typeof (bool?);
 			Schema["uses_quoted_identifier"] = typeof (bool?);

@@ -6,17 +6,8 @@
 	cursor: pointer;
 }
 
-.survey-details {
-	padding: 2em;
-	background-color: #CCCCCC;
-}
-
 .survey-results {
-	border: 1px solid #FFFFFF;
-	border-radius: 1em;
-	background-color: #FFFFFF;
 	min-height: 18em;
-	padding: 1.5em;
 }
 
 .db-object-list {

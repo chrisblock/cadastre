@@ -44,7 +44,7 @@
 				<td><span data-bind="text: duration">0</span> ms</td>
 			</tr>
 			<tr data-bind="visible: areDetailsVisible">
-				<td colspan="6" class="survey-details">
+				<td colspan="6">
 					<div class="survey-results">
 						<ul class="nav nav-tabs" data-bind="foreach: { data: tabs, as: 'tab' }">
 							<li class="dropdown">
@@ -99,156 +99,35 @@
 
 @section scripts {
 <script type="text/javascript">
-	var urls = {
-		Missing: {
-			'Columns': '@Url.Action("Columns", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Functions': '@Url.Action("Functions", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Indexes': '@Url.Action("Indexes", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Schemas': '@Url.Action("Schemas", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Servers': '@Url.Action("Servers", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Stored Procedures': '@Url.Action("StoredProcedures", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Synonyms': '@Url.Action("Synonyms", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Tables': '@Url.Action("Tables", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Triggers': '@Url.Action("Triggers", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Views': '@Url.Action("Views", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })'
-		},
-		Extra: {
-			'Columns': '@Url.Action("Columns", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Functions': '@Url.Action("Functions", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Indexes': '@Url.Action("Indexes", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Schemas': '@Url.Action("Schemas", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Servers': '@Url.Action("Servers", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Stored Procedures': '@Url.Action("StoredProcedures", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Synonyms': '@Url.Action("Synonyms", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Tables': '@Url.Action("Tables", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Triggers': '@Url.Action("Triggers", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			'Views': '@Url.Action("Views", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })'
-		}
-	};
-
-	function DatabaseSurveyListViewModel() {
-		var self = this,
-			databases = ko.observableArray();
-
-		self.databases = databases;
-	}
-	
-	function DatabaseSurveyTab(t) {
-		var self = this,
-			title = ko.observable(t),
-			id = ko.computed(function () {
-				return title().toLowerCase().replace(/\s+/g, '-');
-			}),
-			types = ko.observableArray();
-
-		self.title = title;
-		self.id = id;
-		self.types = types;
-	}
-	
-	function DatabaseSurveyObjectType(t) {
-		var self = this,
-			title = ko.observable(t),
-			id = ko.computed(function () {
-				return title().toLowerCase().replace(/\s+/g, '-');
-			}),
-			objects = ko.observableArray(),
-			isActive = ko.computed(function () {
-				var active = (objects().length === 0);
-
-				return active;
-			}),
-			needsParentColumn = ko.computed(function () {
-				var o = objects();
-
-				return ((o.length > 0) && (!!o[0].parent));
-			});
-
-		self.title = title;
-		self.id = id;
-		self.objects = objects;
-		self.isActive = isActive;
-		self.needsParentColumn = needsParentColumn;
-	}
-
-	function DatabaseSurvey(db) {
-		var self = this,
-			id = ko.observable(db.id),
-			surveyId = ko.observable(db.surveyId),
-			server = ko.observable(db.server),
-			database = ko.observable(db.database),
-			isReferenceSchema = ko.observable(db.isReferenceSchema),
-			hadConnectionError = ko.observable(db.hadConnectionError),
-			hadEtlError = ko.observable(db.hadEtlError),
-			duration = ko.observable(db.duration),
-			areDetailsVisible = ko.observable(false),
-			areDetailsLoaded = false,
-			tabs = ko.observableArray([
-				new DatabaseSurveyTab('Missing'),
-				new DatabaseSurveyTab('Extra')
-			]),
-			loadDetails = function () {
-				if (areDetailsLoaded === false) {
-					areDetailsLoaded = true;
-
-					$.each(tabs(), function (i, tab) {
-						var title = tab.title();
-
-						$.each(urls[title], function (type, url) {
-							var t = new DatabaseSurveyObjectType(type);
-
-							tab.types.push(t);
-
-							setTimeout(function () {
-								var actualUrl = url.replace(/databaseSurveyId/i, id());
-
-								$.getJSON(actualUrl).done(function (r, s, x) {
-									if (r && $.isArray(r)) {
-										$.each(r, function (j, item) {
-											t.objects.push(item);
-										});
-									}
-								});
-							}, 0);
-						});
-					});
-				}
-			};
-
-		self.id = id;
-		self.surveyId = surveyId;
-		self.server = server;
-		self.database = database;
-		self.isReferenceSchema = isReferenceSchema;
-		self.hadConnectionError = hadConnectionError;
-		self.hadEtlError = hadEtlError;
-		self.duration = duration;
-		self.areDetailsVisible = areDetailsVisible;
-		self.tabs = tabs;
-
-		self.toggleDetails = function() {
-			var detailsVisible = areDetailsVisible();
-
-			loadDetails();
-
-			areDetailsVisible((isReferenceSchema() === false) && (detailsVisible === false));
-		};
-	}
-
-	$(document).ready(function() {
-		var model = new DatabaseSurveyListViewModel();
-
-		ko.applyBindings(model, $('#survey').get(0));
-
-		$.getJSON('@Url.Action("Databases", "Surveys", new { surveyId = @Model.Id })').done(function(result, status, jqXHR) {
-			if (result && $.isArray(result)) {
-				$.each(result, function (i, item) {
-					var db = new DatabaseSurvey(item);
-
-					model.databases.push(db);
-				});
+	$(document).ready(function () {
+		var urls = {
+			Missing: {
+				'Columns': '@Url.Action("Columns", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Functions': '@Url.Action("Functions", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Indexes': '@Url.Action("Indexes", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Schemas': '@Url.Action("Schemas", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Servers': '@Url.Action("Servers", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Stored Procedures': '@Url.Action("StoredProcedures", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Synonyms': '@Url.Action("Synonyms", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Tables': '@Url.Action("Tables", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Triggers': '@Url.Action("Triggers", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Views': '@Url.Action("Views", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })'
+			},
+			Extra: {
+				'Columns': '@Url.Action("Columns", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Functions': '@Url.Action("Functions", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Indexes': '@Url.Action("Indexes", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Schemas': '@Url.Action("Schemas", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Servers': '@Url.Action("Servers", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Stored Procedures': '@Url.Action("StoredProcedures", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Synonyms': '@Url.Action("Synonyms", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Tables': '@Url.Action("Tables", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Triggers': '@Url.Action("Triggers", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Views': '@Url.Action("Views", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })'
 			}
-		});
+		};
+
+		cadastre.survey.init(urls, '@Url.Action("Databases", "Surveys", new { surveyId = @Model.Id })', '#survey');
 	});
 </script>
 }

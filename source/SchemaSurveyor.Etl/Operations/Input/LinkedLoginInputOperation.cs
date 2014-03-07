@@ -16,9 +16,7 @@ namespace SchemaSurveyor.Etl.Operations.Input
 			var stringBuilder = new StringBuilder();
 
 			stringBuilder.AppendLine("SELECT");
-			stringBuilder.AppendLine("	  @@SERVERNAME AS [server]");
-			stringBuilder.AppendLine("	, DB_NAME() AS [database]");
-			stringBuilder.AppendLine("	, [server_id]");
+			stringBuilder.AppendLine("	  [server_id]");
 			stringBuilder.AppendLine("	, [local_principal_id]");
 			stringBuilder.AppendLine("	, [uses_self_credential]");
 			stringBuilder.AppendLine("	, [remote_name]");

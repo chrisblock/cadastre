@@ -40,8 +40,12 @@
     <Reference Include="Boo.Lang.Parser">
       <HintPath>..\..\lib\Boo-Compiler.0.9.4\lib\Boo.Lang.Parser.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\lib\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+    <Reference Include="Common.Logging, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\lib\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
     <Reference Include="FileHelpers">
       <HintPath>..\..\lib\FileHelpers.2.0.0.0\lib\FileHelpers.dll</HintPath>
@@ -60,11 +64,13 @@
     <Reference Include="Rhino.DSL">
       <HintPath>..\..\lib\RhinoDSL.1.0.0\lib\Rhino.DSL.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Etl.Core">
-      <HintPath>..\..\lib\Rhino-Etl.1.2.3.0\lib\net35\Rhino.Etl.Core.dll</HintPath>
+    <Reference Include="Rhino.Etl.Core, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Rhino-Etl.1.2.4.0\lib\net35\Rhino.Etl.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Etl.Dsl">
-      <HintPath>..\..\lib\Rhino-Etl.1.2.3.0\lib\net35\Rhino.Etl.Dsl.dll</HintPath>
+    <Reference Include="Rhino.Etl.Dsl, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Rhino-Etl.1.2.4.0\lib\net35\Rhino.Etl.Dsl.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\lib\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
@@ -97,17 +103,18 @@
     <Compile Include="Operations\BulkInsert\ServerBulkInsertOperation.cs" />
     <Compile Include="Operations\BulkInsert\SimpleBulkInsertOperation.cs" />
     <Compile Include="Operations\BulkInsert\SqlLoginBulkInsertOperation.cs" />
+    <Compile Include="Operations\BulkInsert\SqlModuleDefinitionBulkInsertOperation.cs" />
     <Compile Include="Operations\BulkInsert\SynonymBulkInsertOperation.cs" />
     <Compile Include="Operations\BulkInsert\TableBulkInsertOperation.cs" />
     <Compile Include="Operations\BulkInsert\TriggerBulkInsertOperation.cs" />
     <Compile Include="Operations\BulkInsert\ViewBulkInsertOperation.cs" />
+    <Compile Include="Operations\Input\SqlModuleDefinitionInputOperation.cs" />
     <Compile Include="Operations\Input\SqlModuleInputOperation.cs" />
     <Compile Include="Operations\Input\CheckConstraintInputOperation.cs" />
     <Compile Include="Operations\Input\ColumnInputOperation.cs" />
     <Compile Include="Operations\Input\DatabasePermissionInputOperation.cs" />
     <Compile Include="Operations\Input\DatabasePrincipalInputOperation.cs" />
     <Compile Include="Operations\Input\DatabaseRoleMemberInputOperation.cs" />
-    <Compile Include="Operations\Input\DatabaseTypeMappingInputOperation.cs" />
     <Compile Include="Operations\Input\DefaultConstraintInputOperation.cs" />
     <Compile Include="Operations\Input\ForeignKeyColumnInputOperation.cs" />
     <Compile Include="Operations\Input\ForeignKeyInputOperation.cs" />

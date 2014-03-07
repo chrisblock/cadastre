@@ -14,7 +14,8 @@ namespace SchemaSurveyor.Core.Servers.Impl
 			// TODO: cache this because its SLOW
 			var result = SqlDataSourceEnumerator.Instance.GetDataSources().Rows
 				.Cast<DataRow>()
-				.Select(CreateServer);
+				.Select(CreateServer)
+				.OrderBy(x => x.Name);
 
 			return result;
 		}
@@ -26,7 +27,7 @@ namespace SchemaSurveyor.Core.Servers.Impl
 
 			if (String.IsNullOrWhiteSpace(instanceName) == false)
 			{
-				serverName = String.Format("{0}\\{1}", serverName, serverName);
+				serverName = String.Format("{0}\\{1}", serverName, instanceName);
 			}
 
 			var result = new Server
@@ -53,7 +54,7 @@ namespace SchemaSurveyor.Core.Servers.Impl
 
 				using (var command = connection.CreateCommand())
 				{
-					command.CommandText = "SELECT [name] FROM [sys].[databases] WHERE [name] NOT IN ('master', 'tempdb', 'model', 'msdb')	";
+					command.CommandText = "SELECT [name] FROM [sys].[databases] WHERE [name] NOT IN ('master', 'tempdb', 'model', 'msdb')";
 
 					using (var reader = command.ExecuteReader())
 					{

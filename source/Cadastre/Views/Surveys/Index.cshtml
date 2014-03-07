@@ -15,7 +15,7 @@
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: surveys">
-		<tr data-bind="click: $parent.go" class="cursor-hand">
+		<tr data-bind="click: $parent.showSurvey" class="cursor-hand">
 			<td data-bind="text: name"></td>
 			<td data-bind="text: machine"></td>
 			<td data-bind="text: user"></td>
@@ -27,29 +27,8 @@
 
 @section scripts {
 <script type="text/javascript">
-function SurveyListViewModel() {
-	var self = this,
-		surveys = ko.observableArray();
-
-	self.surveys = surveys;
-
-	self.go = function (survey, event) {
-		var url = '@Url.Action("Survey", "Surveys", new { surveyId = 0 })'.replace('0', survey.id);
-
-		document.location.href =  url;
-	};
-}
-
-$(document).ready(function () {
-	var model = new SurveyListViewModel();
-
-	ko.applyBindings(model, $('#surveys').get(0));
-
-	$.getJSON('@Url.Action("Surveys", "Surveys")').done(function (result, status, jqXHR) {
-		if (result && $.isArray(result)) {
-			model.surveys(result);
-		}
+	$(document).ready(function () {
+		cadastre.surveys.init('@Url.Action("Surveys", "Surveys")', '@Url.Action("Survey", "Surveys", new { surveyId = 0 })', '#surveys');
 	});
-});
 </script>
 }

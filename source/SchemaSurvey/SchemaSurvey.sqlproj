@@ -113,6 +113,9 @@
     <Build Include="dbo\Views\ExtraServers.sql" />
     <Build Include="dbo\Views\ExtraSynonyms.sql" />
     <Build Include="dbo\Views\MissingSynonyms.sql" />
+    <Build Include="dbo\Tables\SqlModules.sql" />
+    <Build Include="dbo\Views\DifferentIndexes.sql" />
+    <Build Include="dbo\Tables\SqlModuleDefinitions.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
