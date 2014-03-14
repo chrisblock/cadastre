@@ -5,6 +5,7 @@
 		Column,
 		Function,
 		Index,
+		Principal,
 		Schema,
 		Server,
 		StoredProcedure,

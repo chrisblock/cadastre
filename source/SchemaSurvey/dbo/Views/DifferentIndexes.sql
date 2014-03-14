@@ -12,7 +12,7 @@ AS
 			  [Indexes].[database_survey]
 			, [Indexes].[object_id]
 			, [Indexes].[index_id]
-			, CHECKSUM_AGG(BINARY_CHECKSUM([Columns].[name]))
+			, CHECKSUM_AGG(BINARY_CHECKSUM([Columns].[name])) AS [checksum]
 		FROM [dbo].[Indexes]
 		INNER JOIN [dbo].[IndexColumns]
 				ON [IndexColumns].[database_survey] = [Indexes].[database_survey]

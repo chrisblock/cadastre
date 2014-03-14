@@ -3,51 +3,61 @@ using System.Data.SqlClient;
 
 using Rhino.Etl.Core.Operations;
 
+using SchemaSurveyor.Etl.Tables;
+
 namespace SchemaSurveyor.Etl.Operations.BulkInsert
 {
-	public abstract class SimpleBulkInsertOperation : SqlBulkInsertOperation
+	public class SimpleBulkInsertOperation<T> : SqlBulkInsertOperation
+		where T : ITableDefinition, new()
 	{
+		private static readonly T TableDefinition = new T();
+
 		private static ConnectionStringSettings BuildConnectionStringSettings(string server, string database)
 		{
 			var connectionStringBuilder = new SqlConnectionStringBuilder
-				{
-					DataSource = server,
-					InitialCatalog = database,
-					IntegratedSecurity = true
-				};
+			{
+				DataSource = server,
+				InitialCatalog = database,
+				IntegratedSecurity = true
+			};
 
 			return BuildConnectionStringSettings(connectionStringBuilder);
 		}
 
 		private static ConnectionStringSettings BuildConnectionStringSettings(SqlConnectionStringBuilder connectionStringBuilder)
 		{
-			var settings = new ConnectionStringSettings("ConnectionStringName", connectionStringBuilder.ToString(), typeof (SqlConnection).AssemblyQualifiedName);
+			var settings = new ConnectionStringSettings("ConnectionStringName", connectionStringBuilder.ToString(), typeof(SqlConnection).AssemblyQualifiedName);
 
 			return settings;
 		}
 
-		protected SimpleBulkInsertOperation(string server, string database, string tableName) : base(BuildConnectionStringSettings(server, database), tableName)
+		public SimpleBulkInsertOperation(string server, string database) : base(BuildConnectionStringSettings(server, database), TableDefinition.Name)
 		{
 		}
 
-		protected SimpleBulkInsertOperation(string server, string database, string tableName, int timeout) : base(BuildConnectionStringSettings(server, database), tableName, timeout)
+		public SimpleBulkInsertOperation(string server, string database, int timeout) : base(BuildConnectionStringSettings(server, database), TableDefinition.Name, timeout)
 		{
 		}
 
-		protected SimpleBulkInsertOperation(string connectionString, string tableName) : this(new SqlConnectionStringBuilder(connectionString), tableName)
+		public SimpleBulkInsertOperation(string connectionString) : this(new SqlConnectionStringBuilder(connectionString))
 		{
 		}
 
-		protected SimpleBulkInsertOperation(string connectionString, string tableName, int timeout) : this(new SqlConnectionStringBuilder(connectionString), tableName, timeout)
+		public SimpleBulkInsertOperation(string connectionString, int timeout) : this(new SqlConnectionStringBuilder(connectionString), timeout)
 		{
 		}
 
-		protected SimpleBulkInsertOperation(SqlConnectionStringBuilder connectionStringBuilder, string tableName) : base(BuildConnectionStringSettings(connectionStringBuilder), tableName)
+		public SimpleBulkInsertOperation(SqlConnectionStringBuilder connectionStringBuilder) : base(BuildConnectionStringSettings(connectionStringBuilder), TableDefinition.Name)
 		{
 		}
 
-		protected SimpleBulkInsertOperation(SqlConnectionStringBuilder connectionStringBuilder, string tableName, int timeout) : base(BuildConnectionStringSettings(connectionStringBuilder), tableName, timeout)
+		public SimpleBulkInsertOperation(SqlConnectionStringBuilder connectionStringBuilder, int timeout) : base(BuildConnectionStringSettings(connectionStringBuilder), TableDefinition.Name, timeout)
 		{
+		}
+
+		protected override void PrepareSchema()
+		{
+			TableDefinition.SetSchema(Schema);
 		}
 	}
 }

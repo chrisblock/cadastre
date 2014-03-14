@@ -21,6 +21,9 @@ namespace SchemaSurveyor.Core.MissingObjects.Impl
 				case ObjectType.Index:
 					result = GetMissingIndexes(surveyId, databaseSurveyId);
 					break;
+				case ObjectType.Principal:
+					result = GetMissingPrincipals(surveyId, databaseSurveyId);
+					break;
 				case ObjectType.Schema:
 					result = GetMissingSchemas(surveyId, databaseSurveyId);
 					break;
@@ -164,6 +167,48 @@ namespace SchemaSurveyor.Core.MissingObjects.Impl
 								Parent = table,
 								Name = index,
 								Type = ObjectType.Index
+							};
+
+							result.Add(obj);
+						}
+
+						reader.Close();
+					}
+				}
+
+				connection.Close();
+			}
+
+			return result.AsQueryable();
+		}
+
+		private IQueryable<MissingObject> GetMissingPrincipals(int surveyId, int databaseSurveyId)
+		{
+			var result = new List<MissingObject>();
+
+			using (var connection = GetSchemaSurveyConnection())
+			{
+				connection.Open();
+
+				using (var command = connection.CreateCommand("SELECT [survey], [database_survey], [principal] FROM [dbo].[MissingPrincipals] WHERE [survey] = @surveyId AND [database_survey] = @databaseSurveyId"))
+				{
+					command.AddParameter("surveyId", surveyId);
+					command.AddParameter("databaseSurveyId", databaseSurveyId);
+
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							var survey = reader["survey"] as int?;
+							var databaseSurvey = reader["database_survey"] as int?;
+							var principal = reader["principal"] as string;
+
+							var obj = new MissingObject
+							{
+								Survey = survey.GetValueOrDefault(),
+								Database = databaseSurvey.GetValueOrDefault(),
+								Name = principal,
+								Type = ObjectType.Principal
 							};
 
 							result.Add(obj);

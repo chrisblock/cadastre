@@ -4,14 +4,18 @@ using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading;
 
 namespace SchemaSurveyor.Core.Servers.Impl
 {
 	public class DatabaseRepository : IDatabaseRepository
 	{
-		public IEnumerable<Server> GetServers()
+		private static readonly Lazy<IEnumerable<Server>> LazyServerList = new Lazy<IEnumerable<Server>>(CreateServerList, LazyThreadSafetyMode.ExecutionAndPublication);
+
+		private static IEnumerable<Server> ServerList { get { return LazyServerList.Value; } }
+
+		private static IEnumerable<Server> CreateServerList()
 		{
-			// TODO: cache this because its SLOW
 			var result = SqlDataSourceEnumerator.Instance.GetDataSources().Rows
 				.Cast<DataRow>()
 				.Select(CreateServer)
@@ -36,6 +40,11 @@ namespace SchemaSurveyor.Core.Servers.Impl
 			};
 
 			return result;
+		}
+
+		public IEnumerable<Server> GetServers()
+		{
+			return ServerList;
 		}
 
 		public IEnumerable<Database> GetDatabases(string serverName)

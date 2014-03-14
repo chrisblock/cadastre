@@ -82,58 +82,8 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Operations\BulkInsert\SqlModuleBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\CheckConstraintBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\ColumnBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\DatabasePermissionBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\DatabasePrincipalBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\DatabaseRoleMemberBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\DefaultConstraintBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\ForeignKeyBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\ForeignKeyColumnBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\FunctionBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\IndexBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\IndexColumnBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\KeyConstraintBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\LinkedLoginBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\ParameterBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\ProcedureBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\RemoteLoginBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\SchemaBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\ServerBulkInsertOperation.cs" />
     <Compile Include="Operations\BulkInsert\SimpleBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\SqlLoginBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\SqlModuleDefinitionBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\SynonymBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\TableBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\TriggerBulkInsertOperation.cs" />
-    <Compile Include="Operations\BulkInsert\ViewBulkInsertOperation.cs" />
-    <Compile Include="Operations\Input\SqlModuleDefinitionInputOperation.cs" />
-    <Compile Include="Operations\Input\SqlModuleInputOperation.cs" />
-    <Compile Include="Operations\Input\CheckConstraintInputOperation.cs" />
-    <Compile Include="Operations\Input\ColumnInputOperation.cs" />
-    <Compile Include="Operations\Input\DatabasePermissionInputOperation.cs" />
-    <Compile Include="Operations\Input\DatabasePrincipalInputOperation.cs" />
-    <Compile Include="Operations\Input\DatabaseRoleMemberInputOperation.cs" />
-    <Compile Include="Operations\Input\DefaultConstraintInputOperation.cs" />
-    <Compile Include="Operations\Input\ForeignKeyColumnInputOperation.cs" />
-    <Compile Include="Operations\Input\ForeignKeyInputOperation.cs" />
-    <Compile Include="Operations\Input\FunctionInputOperation.cs" />
-    <Compile Include="Operations\Input\IndexColumnInputOperation.cs" />
-    <Compile Include="Operations\Input\IndexInputOperation.cs" />
-    <Compile Include="Operations\Input\KeyConstraintInputOperation.cs" />
-    <Compile Include="Operations\Input\LinkedLoginInputOperation.cs" />
-    <Compile Include="Operations\Input\ParameterInputOperation.cs" />
-    <Compile Include="Operations\Input\ProcedureInputOperation.cs" />
-    <Compile Include="Operations\Input\RemoteLoginInputOperation.cs" />
-    <Compile Include="Operations\Input\SchemaInputOperation.cs" />
-    <Compile Include="Operations\Input\ServerInputOperation.cs" />
     <Compile Include="Operations\Input\SimpleInputCommandOperation.cs" />
-    <Compile Include="Operations\Input\SqlLoginInputOperation.cs" />
-    <Compile Include="Operations\Input\SynonymInputOperation.cs" />
-    <Compile Include="Operations\Input\TableInputOperation.cs" />
-    <Compile Include="Operations\Input\TriggerInputOperation.cs" />
-    <Compile Include="Operations\Input\ViewInputOperation.cs" />
     <Compile Include="Operations\Transformation\AddDatabaseSurveyIdColumnOperation.cs" />
     <Compile Include="Operations\Transformation\AddSurveyIdColumnOperation.cs" />
     <Compile Include="Operations\Transformation\Md5HashColumnOperation.cs" />
@@ -149,6 +99,33 @@
     <Compile Include="Surveying\Impl\StandardInputDatabaseListFactory.cs" />
     <Compile Include="Surveying\Impl\StreamDatabaseListFactory.cs" />
     <Compile Include="Surveying\ISchemaSurveyor.cs" />
+    <Compile Include="Tables\AbstractTableDefinition.cs" />
+    <Compile Include="Tables\Impl\CheckConstraintTableDefinition.cs" />
+    <Compile Include="Tables\Impl\ColumnTableDefinition.cs" />
+    <Compile Include="Tables\Impl\DatabasePermissionTableDefinition.cs" />
+    <Compile Include="Tables\Impl\DatabasePrincipalTableDefinition.cs" />
+    <Compile Include="Tables\Impl\DatabaseRoleMemberTableDefinition.cs" />
+    <Compile Include="Tables\Impl\DefaultConstraintTableDefinition.cs" />
+    <Compile Include="Tables\Impl\ForeignKeyColumnTableDefinition.cs" />
+    <Compile Include="Tables\Impl\ForeignKeyTableDefinition.cs" />
+    <Compile Include="Tables\Impl\FunctionTableDefinition.cs" />
+    <Compile Include="Tables\Impl\IndexColumnTableDefinition.cs" />
+    <Compile Include="Tables\Impl\IndexTableDefinition.cs" />
+    <Compile Include="Tables\Impl\KeyConstraintTableDefinition.cs" />
+    <Compile Include="Tables\Impl\LinkedLoginTableDefinition.cs" />
+    <Compile Include="Tables\Impl\ParameterTableDefinition.cs" />
+    <Compile Include="Tables\Impl\ProcedureTableDefinition.cs" />
+    <Compile Include="Tables\Impl\RemoteLoginTableDefinition.cs" />
+    <Compile Include="Tables\Impl\SchemaTableDefinition.cs" />
+    <Compile Include="Tables\Impl\ServerTableDefinition.cs" />
+    <Compile Include="Tables\Impl\SqlLoginTableDefinition.cs" />
+    <Compile Include="Tables\Impl\SqlModuleDefinitionTableDefinition.cs" />
+    <Compile Include="Tables\Impl\SqlModuleTableDefinition.cs" />
+    <Compile Include="Tables\Impl\SynonymTableDefinition.cs" />
+    <Compile Include="Tables\Impl\TableTableDefinition.cs" />
+    <Compile Include="Tables\Impl\TriggerTableDefinition.cs" />
+    <Compile Include="Tables\Impl\ViewTableDefinition.cs" />
+    <Compile Include="Tables\ITableDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -159,6 +136,7 @@
       <Name>SchemaSurveyor.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

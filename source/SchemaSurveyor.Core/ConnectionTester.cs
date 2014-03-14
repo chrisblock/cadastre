@@ -32,6 +32,11 @@ namespace SchemaSurveyor.Core
 				{
 					connection.Open();
 
+					using (var command = connection.CreateCommand("SELECT @@VERSION"))
+					{
+						
+					}
+
 					result = true;
 
 					connection.Close();

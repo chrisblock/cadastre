@@ -36,6 +36,41 @@ namespace Cadastre
 			return result;
 		}
 
+		public static MvcHtmlString Grid<TGridItem>(this HtmlHelper htmlHelper)
+		{
+			var type = typeof (TGridItem);
+
+			var properties = type
+				.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+			var columnNames = properties
+				.Select(x => Regex.Replace(x.Name, @"[A-Z]", " $&").Trim());
+
+			var stringBuilder = new StringBuilder();
+
+			stringBuilder.Append("<table>");
+			stringBuilder.Append("<thead>");
+			stringBuilder.Append("<tr>");
+			stringBuilder.AppendFormat("<th>{0}</th>", String.Join("</th><th>", columnNames));
+			stringBuilder.Append("</tr>");
+			stringBuilder.Append("</thead>");
+			stringBuilder.Append("<tbody>");
+
+			stringBuilder.Append("<tr>");
+			
+			foreach (var property in properties)
+			{
+				stringBuilder.AppendFormat("<td data-bind=\"text: {0}\"></td>", property.Name);
+			}
+
+			stringBuilder.Append("</tr>");
+
+			stringBuilder.Append("</tbody>");
+			stringBuilder.Append("</table>");
+
+			return MvcHtmlString.Create(stringBuilder.ToString());
+		}
+
 		public static MvcHtmlString Grid<TGridItem>(this HtmlHelper htmlHelper, IEnumerable<TGridItem> items)
 		{
 			var type = typeof (TGridItem);
@@ -129,16 +164,7 @@ namespace Cadastre
 		{
 			htmlAttributes["type"] = "submit";
 
-			var stringBuilder = new StringBuilder("<button");
-
-			foreach (var attribute in htmlAttributes)
-			{
-				stringBuilder.AppendFormat(" {0}=\"{1}\"", attribute.Key, attribute.Value);
-			}
-
-			stringBuilder.AppendFormat(">{0}</button>", text);
-
-			return MvcHtmlString.Create(stringBuilder.ToString());
+			return Button(htmlHelper, text, htmlAttributes);
 		}
 	}
 }

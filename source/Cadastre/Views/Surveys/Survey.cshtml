@@ -35,7 +35,7 @@
 			</tr>
 		</thead>
 		<tbody data-bind="foreach: { data: databases, as: 'database' }">
-			<tr class="cursor-hand" data-bind="click: toggleDetails">
+			<tr data-bind="css: { 'cursor-hand': isReferenceSchema() === false }, click: toggleDetails">
 				<td data-bind="text: server"></td>
 				<td data-bind="text: database"></td>
 				<td class="text-center"><input type="checkbox" disabled="disabled" data-bind="checked: isReferenceSchema" /></td>
@@ -105,6 +105,7 @@
 				'Columns': '@Url.Action("Columns", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Functions': '@Url.Action("Functions", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Indexes': '@Url.Action("Indexes", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Principals': '@Url.Action("Principals", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Schemas': '@Url.Action("Schemas", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Servers': '@Url.Action("Servers", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Stored Procedures': '@Url.Action("StoredProcedures", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
@@ -117,6 +118,7 @@
 				'Columns': '@Url.Action("Columns", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Functions': '@Url.Action("Functions", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Indexes': '@Url.Action("Indexes", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+				'Principals': '@Url.Action("Principals", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Schemas': '@Url.Action("Schemas", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Servers': '@Url.Action("Servers", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
 				'Stored Procedures': '@Url.Action("StoredProcedures", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',

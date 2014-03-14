@@ -1,4 +1,3 @@
-using System.Data.SqlClient;
 using System.Diagnostics;
 
 using SchemaSurveyor.Core;
@@ -8,13 +7,13 @@ namespace SchemaSurveyor.Etl.Surveying.Impl
 {
 	public class DatabaseSchemaSurveyor : BaseSchemaSurveyRepository, IDatabaseSchemaSurveyor
 	{
-		public DatabaseSurvey Survey(DatabaseSurvey database)
+		public DatabaseSurvey Survey(DatabaseSurvey databaseSurvey)
 		{
 			var destination = GetSchemaSurveyConnectionString();
 
-			var source = database.GetConnectionStringBuilder();
+			var source = databaseSurvey.GetConnectionStringBuilder();
 
-			var etlProcess = new SchemaSurveyEtlProcess(database.Id, source, destination);
+			var etlProcess = new SchemaSurveyEtlProcess(databaseSurvey.Id, source, destination);
 
 			var stopwatch = new Stopwatch();
 
@@ -26,12 +25,12 @@ namespace SchemaSurveyor.Etl.Surveying.Impl
 
 			var result = new DatabaseSurvey
 			{
-				Id = database.Id,
-				SurveyId = database.SurveyId,
-				Server = database.Server,
-				Database = database.Database,
+				Id = databaseSurvey.Id,
+				SurveyId = databaseSurvey.SurveyId,
+				Server = databaseSurvey.Server,
+				Database = databaseSurvey.Database,
 				Duration = stopwatch.ElapsedMilliseconds,
-				HadConnectionError = database.HadConnectionError,
+				HadConnectionError = databaseSurvey.HadConnectionError,
 				Errors = etlProcess.GetAllErrors()
 			};
 

@@ -25,10 +25,9 @@ namespace SchemaSurveyor.Etl.Surveying.Impl
 		{
 			var survey = new Survey
 			{
+				Id = _surveyRepository.Insert(surveyName),
 				Name = surveyName
 			};
-
-			survey.Id = _surveyRepository.Insert(surveyName);
 
 			var databaseSurveys = new ConcurrentBag<DatabaseSurvey>();
 

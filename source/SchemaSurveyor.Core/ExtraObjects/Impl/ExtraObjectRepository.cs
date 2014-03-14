@@ -21,6 +21,9 @@ namespace SchemaSurveyor.Core.ExtraObjects.Impl
 				case ObjectType.Index:
 					result = GetExtraIndexes(surveyId, databaseSurveyId);
 					break;
+				case ObjectType.Principal:
+					result = GetExtraPrincipals(surveyId, databaseSurveyId);
+					break;
 				case ObjectType.Schema:
 					result = GetExtraSchemas(surveyId, databaseSurveyId);
 					break;
@@ -166,6 +169,49 @@ namespace SchemaSurveyor.Core.ExtraObjects.Impl
 								Parent = table,
 								Name = index,
 								Type = ObjectType.Index
+							};
+
+							result.Add(obj);
+						}
+
+						reader.Close();
+					}
+				}
+
+				connection.Close();
+			}
+
+			return result.AsQueryable();
+		}
+
+		private IQueryable<ExtraObject> GetExtraPrincipals(int surveyId, int databaseSurveyId)
+		{
+
+			var result = new List<ExtraObject>();
+
+			using (var connection = GetSchemaSurveyConnection())
+			{
+				connection.Open();
+
+				using (var command = connection.CreateCommand("SELECT [survey], [database_survey], [principal] FROM [dbo].[ExtraPrincipals] WHERE [survey] = @surveyId AND [database_survey] = @databaseSurveyId"))
+				{
+					command.AddParameter("surveyId", surveyId);
+					command.AddParameter("databaseSurveyId", databaseSurveyId);
+
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							var survey = reader["survey"] as int?;
+							var databaseSurvey = reader["database_survey"] as int?;
+							var principal = reader["principal"] as string;
+
+							var obj = new ExtraObject
+							{
+								Survey = survey.GetValueOrDefault(),
+								Database = databaseSurvey.GetValueOrDefault(),
+								Name = principal,
+								Type = ObjectType.Principal
 							};
 
 							result.Add(obj);

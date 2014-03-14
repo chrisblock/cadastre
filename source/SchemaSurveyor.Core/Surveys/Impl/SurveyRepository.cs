@@ -103,7 +103,7 @@ namespace SchemaSurveyor.Core.Surveys.Impl
 					command.AddParameter("user", userAndDomain);
 					command.AddParameter("machine", Environment.MachineName);
 
-					result = (int)command.ExecuteScalar();
+					result = (int) command.ExecuteScalar();
 				}
 
 				connection.Close();

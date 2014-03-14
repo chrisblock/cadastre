@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[SqlModules]
 (
-	[id] INT IDENTITY(1, 1),
+	[id] INT IDENTITY(1, 1) NOT NULL,
 	[database_survey] INT NOT NULL,
 	[object_id] INT NOT NULL,
 	[definition_length] INT NULL,

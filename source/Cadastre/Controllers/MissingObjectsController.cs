@@ -14,6 +14,8 @@ namespace Cadastre.Controllers
 			_missingObjectRepository = missingObjectRepository;
 		}
 
+		// TODO: create an object for this to return, to reduce the number of requests made for missing/extra objects
+
 		[HttpGet]
 		[ActionName("Columns")]
 		public ActionResult Columns(int surveyId, int databaseSurveyId)
@@ -39,6 +41,15 @@ namespace Cadastre.Controllers
 			var missingIndexes = _missingObjectRepository.GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Index);
 
 			return Json(missingIndexes, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpGet]
+		[ActionName("Principals")]
+		public ActionResult Principals(int surveyId, int databaseSurveyId)
+		{
+			var missingPrincipals = _missingObjectRepository.GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Principal);
+
+			return Json(missingPrincipals, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]

@@ -5,10 +5,15 @@ using System.Data.SqlClient;
 using Rhino.Etl.Core;
 using Rhino.Etl.Core.Operations;
 
+using SchemaSurveyor.Etl.Tables;
+
 namespace SchemaSurveyor.Etl.Operations.Input
 {
-	public abstract class SimpleInputCommandOperation : InputCommandOperation
+	public class SimpleInputCommandOperation<T> : InputCommandOperation
+		where T : ITableDefinition, new()
 	{
+		private static readonly T TableDefinition = new T();
+
 		private static ConnectionStringSettings BuildConnectionStringSettings(string server, string database)
 		{
 			var connectionStringBuilder = new SqlConnectionStringBuilder
@@ -28,21 +33,26 @@ namespace SchemaSurveyor.Etl.Operations.Input
 			return settings;
 		}
 
-		protected SimpleInputCommandOperation(string connectionString) : this(new SqlConnectionStringBuilder(connectionString))
+		public SimpleInputCommandOperation(string connectionString) : this(new SqlConnectionStringBuilder(connectionString))
 		{
 		}
 
-		protected SimpleInputCommandOperation(string server, string database) : base(BuildConnectionStringSettings(server, database))
+		public SimpleInputCommandOperation(string server, string database) : base(BuildConnectionStringSettings(server, database))
 		{
 		}
 
-		protected SimpleInputCommandOperation(SqlConnectionStringBuilder connectionStringBuilder) : base(BuildConnectionStringSettings(connectionStringBuilder))
+		public SimpleInputCommandOperation(SqlConnectionStringBuilder connectionStringBuilder) : base(BuildConnectionStringSettings(connectionStringBuilder))
 		{
 		}
 
 		protected override Row CreateRowFromReader(IDataReader reader)
 		{
 			return Row.FromReader(reader);
+		}
+
+		protected override void PrepareCommand(IDbCommand cmd)
+		{
+			cmd.CommandText = TableDefinition.GetSelectStatement();
 		}
 	}
 }
