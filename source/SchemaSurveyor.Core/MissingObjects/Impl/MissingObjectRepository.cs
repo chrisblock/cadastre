@@ -6,6 +6,26 @@ namespace SchemaSurveyor.Core.MissingObjects.Impl
 {
 	public class MissingObjectRepository : BaseSchemaSurveyRepository, IMissingObjectRepository
 	{
+		public MissingObjectCollection GetMissingObjects(int surveyId, int databaseSurveyId)
+		{
+			var result = new MissingObjectCollection
+			{
+				Columns = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Column),
+				Functions = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Function),
+				Indexes = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Index),
+				Principals = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Principal),
+				Schemas = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Schema),
+				Servers = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Server),
+				StoredProcedures = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.StoredProcedure),
+				Synonyms = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Synonym),
+				Tables = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Table),
+				Triggers = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.Trigger),
+				Views = GetMissingObjects(surveyId, databaseSurveyId, ObjectType.View)
+			};
+
+			return result;
+		}
+
 		public IQueryable<MissingObject> GetMissingObjects(int surveyId, int databaseSurveyId, ObjectType type)
 		{
 			IQueryable<MissingObject> result;

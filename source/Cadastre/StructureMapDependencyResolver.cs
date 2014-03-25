@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 using StructureMap;
 
 namespace Cadastre
 {
-	public class StructureMapDependencyResolver : IDependencyResolver
+	public class StructureMapDependencyResolver : System.Web.Mvc.IDependencyResolver, System.Web.Http.Dependencies.IDependencyResolver
 	{
 		private readonly IContainer _container;
 
@@ -39,6 +38,37 @@ namespace Cadastre
 		public IEnumerable<object> GetServices(Type serviceType)
 		{
 			return _container.GetAllInstances(serviceType).Cast<object>();
+		}
+
+		public System.Web.Http.Dependencies.IDependencyScope BeginScope()
+		{
+			var container = _container.GetNestedContainer();
+
+			return new StructureMapDependencyResolver(container);
+		}
+
+		~StructureMapDependencyResolver()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+
+			GC.SuppressFinalize(this);
+		}
+
+		private void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// dispose managed resources
+
+				_container.Dispose();
+			}
+
+			// dispose native resources
 		}
 	}
 }

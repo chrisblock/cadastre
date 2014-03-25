@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace Cadastre
@@ -7,6 +8,31 @@ namespace Cadastre
 	{
 		public static void RegisterRoutes(RouteCollection routes)
 		{
+			routes.MapHttpRoute(
+				name: "SurveyApi",
+				routeTemplate: "api/Surveys/{surveyId}",
+				defaults: new { controller = "Surveys", surveyId = RouteParameter.Optional });
+
+			routes.MapHttpRoute(
+				name: "DatabaseSurveyApi",
+				routeTemplate: "api/Surveys/{surveyId}/Databases/{databaseSurveyId}",
+				defaults: new { controller = "DatabaseSurveys", databaseSurveyId = RouteParameter.Optional });
+
+			routes.MapHttpRoute(
+				name: "MissingObjectApi",
+				routeTemplate: "api/Surveys/{surveyId}/Databases/{databaseSurveyId}/MissingObjects/{objectType}",
+				defaults: new { controller = "MissingObjects", objectType = RouteParameter.Optional });
+
+			routes.MapHttpRoute(
+				name: "ExtraObjectApi",
+				routeTemplate: "api/Surveys/{surveyId}/Databases/{databaseSurveyId}/ExtraObjects/{objectType}",
+				defaults: new { controller = "ExtraObjects", objectType = RouteParameter.Optional });
+
+			routes.MapHttpRoute(
+				name: "ServerApi",
+				routeTemplate: "api/Servers/{serverName}",
+				defaults: new { controller = "Servers", serverName = RouteParameter.Optional });
+
 			routes.MapRoute(
 				name: "Databases",
 				url: "Servers/{serverName}",
@@ -20,12 +46,6 @@ namespace Cadastre
 			);
 
 			routes.MapRoute(
-				name: "RequestSurvey",
-				url: "Surveys/Request",
-				defaults: new { controller = "Surveys", action = "Request" }
-			);
-
-			routes.MapRoute(
 				name: "Surveys",
 				url: "Surveys/",
 				defaults: new { controller = "Surveys", action = "Surveys" }
@@ -35,18 +55,6 @@ namespace Cadastre
 				name: "Survey",
 				url: "Surveys/{surveyId}",
 				defaults: new { controller = "Surveys", action = "Survey" }
-			);
-
-			routes.MapRoute(
-				name: "ExtraObjects",
-				url: "Surveys/{surveyId}/Databases/{databaseSurveyId}/ExtraObjects/{action}",
-				defaults: new { controller = "ExtraObjects" }
-			);
-
-			routes.MapRoute(
-				name: "MissingObject",
-				url: "Surveys/{surveyId}/Databases/{databaseSurveyId}/MissingObjects/{action}",
-				defaults: new { controller = "MissingObjects" }
 			);
 
 			routes.MapRoute(

@@ -126,6 +126,7 @@
     <Compile Include="Tables\Impl\TriggerTableDefinition.cs" />
     <Compile Include="Tables\Impl\ViewTableDefinition.cs" />
     <Compile Include="Tables\ITableDefinition.cs" />
+    <Compile Include="Tables\SqlServerVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

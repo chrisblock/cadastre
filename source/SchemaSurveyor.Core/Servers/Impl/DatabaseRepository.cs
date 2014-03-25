@@ -10,21 +10,21 @@ namespace SchemaSurveyor.Core.Servers.Impl
 {
 	public class DatabaseRepository : IDatabaseRepository
 	{
-		private static readonly Lazy<IEnumerable<Server>> LazyServerList = new Lazy<IEnumerable<Server>>(CreateServerList, LazyThreadSafetyMode.ExecutionAndPublication);
+		private static readonly Lazy<IEnumerable<string>> LazyServerList = new Lazy<IEnumerable<string>>(CreateServerList, LazyThreadSafetyMode.ExecutionAndPublication);
 
-		private static IEnumerable<Server> ServerList { get { return LazyServerList.Value; } }
+		private static IEnumerable<string> ServerList { get { return LazyServerList.Value; } }
 
-		private static IEnumerable<Server> CreateServerList()
+		private static IEnumerable<string> CreateServerList()
 		{
 			var result = SqlDataSourceEnumerator.Instance.GetDataSources().Rows
 				.Cast<DataRow>()
-				.Select(CreateServer)
-				.OrderBy(x => x.Name);
+				.Select(BuildServerName)
+				.OrderBy(x => x);
 
 			return result;
 		}
 
-		private static Server CreateServer(DataRow x)
+		private static string BuildServerName(DataRow x)
 		{
 			var serverName = String.Format("{0}", x["ServerName"]);
 			var instanceName = String.Format("{0}", x["InstanceName"]);
@@ -34,20 +34,15 @@ namespace SchemaSurveyor.Core.Servers.Impl
 				serverName = String.Format("{0}\\{1}", serverName, instanceName);
 			}
 
-			var result = new Server
-			{
-				Name = serverName,
-			};
-
-			return result;
+			return serverName;
 		}
 
-		public IEnumerable<Server> GetServers()
+		public IEnumerable<string> GetServers()
 		{
 			return ServerList;
 		}
 
-		public IEnumerable<Database> GetDatabases(string serverName)
+		public IEnumerable<string> GetDatabases(string serverName)
 		{
 			var sqlConnectionStringBuilder = new SqlConnectionStringBuilder
 			{
@@ -55,24 +50,21 @@ namespace SchemaSurveyor.Core.Servers.Impl
 				IntegratedSecurity = true
 			};
 
-			var result = new List<Database>();
+			var result = new List<string>();
 
 			using (var connection = new SqlConnection(sqlConnectionStringBuilder.ToString()))
 			{
 				connection.Open();
 
-				using (var command = connection.CreateCommand())
+				using (var command = connection.CreateCommand("SELECT [name] FROM [sys].[databases] WHERE [name] NOT IN ('master', 'tempdb', 'model', 'msdb')"))
 				{
-					command.CommandText = "SELECT [name] FROM [sys].[databases] WHERE [name] NOT IN ('master', 'tempdb', 'model', 'msdb')";
-
 					using (var reader = command.ExecuteReader())
 					{
 						while (reader.Read())
 						{
-							var database = new Database
-							{
-								Name = String.Format("{0}", reader["name"])
-							};
+							var database = String.Format("{0}", reader["name"]);
+
+							// TODO: check database name for null???
 
 							result.Add(database);
 						}
@@ -83,11 +75,6 @@ namespace SchemaSurveyor.Core.Servers.Impl
 			}
 
 			return result;
-		}
-
-		public IEnumerable<Database> GetDatabases(Server server)
-		{
-			return GetDatabases(server.Name);
 		}
 	}
 }

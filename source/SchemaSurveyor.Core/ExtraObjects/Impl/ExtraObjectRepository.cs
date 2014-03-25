@@ -6,6 +6,26 @@ namespace SchemaSurveyor.Core.ExtraObjects.Impl
 {
 	public class ExtraObjectRepository : BaseSchemaSurveyRepository, IExtraObjectRepository
 	{
+		public ExtraObjectCollection GetExtraObjects(int surveyId, int databaseSurveyId)
+		{
+			var result = new ExtraObjectCollection
+			{
+				Columns = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Column),
+				Functions = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Function),
+				Indexes = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Index),
+				Principals = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Principal),
+				Schemas = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Schema),
+				Servers = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Server),
+				StoredProcedures = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.StoredProcedure),
+				Synonyms = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Synonym),
+				Tables = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Table),
+				Triggers = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.Trigger),
+				Views = GetExtraObjects(surveyId, databaseSurveyId, ObjectType.View)
+			};
+
+			return result;
+		}
+
 		public IQueryable<ExtraObject> GetExtraObjects(int surveyId, int databaseSurveyId, ObjectType type)
 		{
 			IQueryable<ExtraObject> result;

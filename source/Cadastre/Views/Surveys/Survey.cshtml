@@ -101,35 +101,11 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		var urls = {
-			Missing: {
-				'Columns': '@Url.Action("Columns", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Functions': '@Url.Action("Functions", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Indexes': '@Url.Action("Indexes", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Principals': '@Url.Action("Principals", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Schemas': '@Url.Action("Schemas", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Servers': '@Url.Action("Servers", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Stored Procedures': '@Url.Action("StoredProcedures", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Synonyms': '@Url.Action("Synonyms", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Tables': '@Url.Action("Tables", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Triggers': '@Url.Action("Triggers", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Views': '@Url.Action("Views", "MissingObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })'
-			},
-			Extra: {
-				'Columns': '@Url.Action("Columns", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Functions': '@Url.Action("Functions", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Indexes': '@Url.Action("Indexes", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Principals': '@Url.Action("Principals", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Schemas': '@Url.Action("Schemas", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Servers': '@Url.Action("Servers", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Stored Procedures': '@Url.Action("StoredProcedures", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Synonyms': '@Url.Action("Synonyms", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Tables': '@Url.Action("Tables", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Triggers': '@Url.Action("Triggers", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-				'Views': '@Url.Action("Views", "ExtraObjects", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })'
-			}
+			Missing: '@Url.HttpRouteUrl("MissingObjectApi", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
+			Extra: '@Url.HttpRouteUrl("ExtraObjectApi", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })'
 		};
 
-		cadastre.survey.init(urls, '@Url.Action("Databases", "Surveys", new { surveyId = @Model.Id })', '#survey');
+		cadastre.survey.init(urls, '@Url.HttpRouteUrl("DatabaseSurveyApi", new { surveyId = @Model.Id })', '#survey');
 	});
 </script>
 }

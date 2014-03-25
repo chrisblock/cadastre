@@ -3,6 +3,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
+using StructureMap;
+
 namespace Cadastre
 {
 	public class MvcApplication : HttpApplication
@@ -15,7 +17,11 @@ namespace Cadastre
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
-			ValueProviderFactoriesConfig.RegisterValueProviderFactories(ValueProviderFactories.Factories);
+		}
+
+		protected void Application_EndRequest()
+		{
+			ObjectFactory.ReleaseAndDisposeAllHttpScopedObjects();
 		}
 	}
 }

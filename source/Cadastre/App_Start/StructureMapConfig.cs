@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
+using System.Web.Mvc;
+
+using Newtonsoft.Json.Serialization;
 
 using StructureMap;
 
@@ -10,7 +13,14 @@ namespace Cadastre
 		{
 			ObjectFactory.Initialize(init => init.AddRegistry<CadastreRegistry>());
 
-			DependencyResolver.SetResolver(new StructureMapDependencyResolver());
+			var dependencyResolver = new StructureMapDependencyResolver();
+
+			DependencyResolver.SetResolver(dependencyResolver);
+
+			GlobalConfiguration.Configuration.DependencyResolver = dependencyResolver;
+
+			// TODO: move this into some other configurator thingy
+			GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 		}
 	}
 }

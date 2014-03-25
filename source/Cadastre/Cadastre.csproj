@@ -45,11 +45,11 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\lib\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\lib\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -133,17 +133,15 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\JsonDotNetValueProvider.cs" />
-    <Compile Include="App_Start\JsonDotNetValueProviderFactory.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StructureMapConfig.cs" />
-    <Compile Include="App_Start\ValueProviderFactoriesConfig.cs" />
     <Compile Include="CadastreRegistry.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="Controllers\ExtraObjectsController.cs" />
-    <Compile Include="Controllers\MissingObjectsController.cs" />
-    <Compile Include="Controllers\ServerController.cs" />
-    <Compile Include="Controllers\ServersController.cs" />
+    <Compile Include="Controllers\Api\DatabaseSurveysController.cs" />
+    <Compile Include="Controllers\Api\ExtraObjectsController.cs" />
+    <Compile Include="Controllers\Api\MissingObjectsController.cs" />
+    <Compile Include="Controllers\Api\ServersController.cs" />
+    <Compile Include="Controllers\Api\SurveysController.cs" />
     <Compile Include="Controllers\SurveysController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -151,7 +149,6 @@
     <Compile Include="HtmlHelperExtensions.cs" />
     <Compile Include="JsonNetDeserializerAttribute.cs" />
     <Compile Include="JsonDotNetResult.cs" />
-    <Compile Include="Models\CreateSurveyViewModel.cs" />
     <Compile Include="Models\DatabaseSurveyRequest.cs" />
     <Compile Include="Models\SurveyRequest.cs" />
     <Compile Include="Models\SurveyViewModel.cs" />

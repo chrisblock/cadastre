@@ -1,6 +1,18 @@
 ﻿(function (cadastre, $, ko, undefined) {
 	(function (survey) {
-		var urls = {},
+		var titles = {
+				'columns': 'Columns',
+				'functions': 'Functions',
+				'indexes': 'Indexes',
+				'principals': 'Principals',
+				'schemas': 'Schemas',
+				'servers': 'Servers',
+				'storedProcedures': 'Stored Procedures',
+				'synonyms': 'Synonyms',
+				'tables': 'Tables',
+				'triggers': 'Triggers',
+				'views': 'Views'
+			},
 			DatabaseSurveyListViewModel = function () {
 				var self = this,
 					databases = ko.observableArray();
@@ -43,7 +55,7 @@
 				self.isActive = isActive;
 				self.needsParentColumn = needsParentColumn;
 			},
-			DatabaseSurvey = function (db) {
+			DatabaseSurvey = function (db, urls) {
 				var self = this,
 					id = ko.observable(db.id),
 					surveyId = ko.observable(db.surveyId),
@@ -64,24 +76,19 @@
 							areDetailsLoaded = true;
 
 							$.each(tabs(), function (i, tab) {
-								var title = tab.title();
+								var title = tab.title(),
+									url = urls[title],
+									actualUrl = url.replace(/databaseSurveyId/i, id());
 
-								$.each(urls[title], function (type, url) {
-									var t = new DatabaseSurveyObjectType(type);
+								$.getJSON(actualUrl, function (result, s, x) {
+									$.each(result, function (type, objects) {
+										var n = titles[type],
+											t = new DatabaseSurveyObjectType(n);
 
-									tab.types.push(t);
+										tab.types.push(t);
 
-									setTimeout(function () {
-										var actualUrl = url.replace(/databaseSurveyId/i, id());
-
-										$.getJSON(actualUrl).done(function (r, s, x) {
-											if (r && $.isArray(r)) {
-												$.each(r, function (j, item) {
-													t.objects.push(item);
-												});
-											}
-										});
-									}, 0);
+										t.objects(objects);
+									});
 								});
 							});
 						}
@@ -107,17 +114,15 @@
 				};
 			};
 
-		survey.init = function (urlMap, surveyDatabasesUrl, canvasId) {
+		survey.init = function (urls, surveyDatabasesUrl, canvasId) {
 			var model = new DatabaseSurveyListViewModel();
-
-			urls = urlMap;
 
 			ko.applyBindings(model, $(canvasId).get(0));
 
 			$.getJSON(surveyDatabasesUrl).done(function (result, status, jqXHR) {
 				if (result && $.isArray(result)) {
 					$.each(result, function (i, item) {
-						var db = new DatabaseSurvey(item);
+						var db = new DatabaseSurvey(item, urls);
 
 						model.databases.push(db);
 					});
