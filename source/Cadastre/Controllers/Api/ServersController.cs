@@ -14,6 +14,8 @@ namespace Cadastre.Controllers.Api
 			_databaseRepository = databaseRepository;
 		}
 
+		[HttpGet]
+		[Route("api/Servers", Name = "ServersApi")]
 		public IEnumerable<string> Get()
 		{
 			var result = _databaseRepository.GetServers();
@@ -21,6 +23,8 @@ namespace Cadastre.Controllers.Api
 			return result;
 		}
 
+		[HttpGet]
+		[Route("api/Servers/{serverName}/Databases", Name = "DatabasesApi")]
 		public IEnumerable<string> Get(string serverName)
 		{
 			var result = _databaseRepository.GetDatabases(serverName);

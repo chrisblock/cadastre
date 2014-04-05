@@ -27,7 +27,7 @@
 				selectedDatabases.removeAll();
 
 				if (!serverDatabases[value]) {
-					p = $.getJSON(serverListUrl + '/' + value, function (result, status, jqXHR) {
+					p = $.getJSON(serverListUrl + '/' + value + '/Databases', function (result, status, jqXHR) {
 						if (result && $.isArray(result)) {
 							serverDatabases[value] = result;
 						}
@@ -42,7 +42,7 @@
 
 					for (var i = 0, len = x.length; i < len; i++) {
 						item = {
-							id: i,
+							id: String(i),
 							server: value,
 							database: x[i]
 						};
@@ -85,19 +85,24 @@
 				e.preventDefault();
 				e.stopPropagation();
 
-				var index = databases.indexOf(model),
-					newReferenceDatabase = '';
+				var dbs = databases(),
+					index = databases.indexOf(model),
+					newReferenceDatabase = referenceDatabase(),
+					available = availableDatabases();
 
-				if ((databases().length > 0) && (model.id === +referenceDatabase())) {
-					if (index === (databases().length - 1)) {
-						newReferenceDatabase = String(databases()[databases().length - 1].id);
+				if ((dbs.length > 1) && (model.id === referenceDatabase())) {
+					if (index === (dbs.length - 1)) {
+						newReferenceDatabase = String(dbs[index - 1].id);
 					}
 					else {
-						newReferenceDatabase = String(databases()[index + 1].id);
+						newReferenceDatabase = String(dbs[index + 1].id);
 					}
-
-					referenceDatabase(newReferenceDatabase);
 				}
+				else if (dbs.length === 1) {
+					newReferenceDatabase = '';
+				}
+
+				referenceDatabase(newReferenceDatabase);
 
 				databases.remove(model);
 
@@ -105,26 +110,23 @@
 
 				delete x[model.database];
 
-				if (availableDatabases().length === 0) {
+				if (available.length === 0) {
 					availableDatabases.push(model);
 				}
 				else {
 					var start = 0,
-						end = availableDatabases().length,
+						count = available.length,
 						it,
-						count,
 						step;
-					
-					count = end - start;
-					
+
 					while (count > 0)
 					{
-						it = start;
 						step = count >> 2;
-						it += step;
-						if (model.id >= availableDatabases()[it].id)
+						it = start + step;
+						
+						if (model.id >= available[it].id)
 						{
-							start = ++it;
+							start = it + 1;
 							count -= step + 1;
 						}
 						else {
@@ -144,11 +146,11 @@
 
 				var data = {
 						name: name(),
-						databases: databases().map(function (x, i) {
+						databases: databases().map(function (x) {
 							return {
 								server: x.server,
 								database: x.database,
-								isReference: i === +referenceDatabase()
+								isReference: x.id === referenceDatabase()
 							};
 						})
 					};

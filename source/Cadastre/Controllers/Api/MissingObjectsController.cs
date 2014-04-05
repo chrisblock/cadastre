@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Http;
 
 using SchemaSurveyor.Core;
@@ -16,6 +15,8 @@ namespace Cadastre.Controllers.Api
 			_missingObjectRepository = missingObjectRepository;
 		}
 
+		[HttpGet]
+		[Route("api/Surveys/{surveyId:int}/Databases/{databaseSurveyId:int}/MissingObjects", Name = "MissingObjectsApi")]
 		public MissingObjectCollection Get(int surveyId, int databaseSurveyId)
 		{
 			var result = _missingObjectRepository.GetMissingObjects(surveyId, databaseSurveyId);
@@ -23,9 +24,11 @@ namespace Cadastre.Controllers.Api
 			return result;
 		}
 
+		[HttpGet]
+		[Route("api/Surveys/{surveyId:int}/Databases/{databaseSurveyId:int}/MissingObjects/{objectType:alpha}", Name = "MissingObjectTypeApi")]
 		public IQueryable<MissingObject> Get(int surveyId, int databaseSurveyId, string objectType)
 		{
-			var type = (ObjectType) Enum.Parse(typeof (ObjectType), objectType);
+			var type = Enums.Parse<ObjectType>(objectType);
 
 			var result = _missingObjectRepository.GetMissingObjects(surveyId, databaseSurveyId, type);
 

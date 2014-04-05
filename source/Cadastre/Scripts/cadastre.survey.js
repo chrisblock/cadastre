@@ -38,7 +38,7 @@
 						return title().toLowerCase().replace(/\s+/g, '-');
 					}),
 					objects = ko.observableArray(),
-					isActive = ko.computed(function () {
+					isDisabled = ko.computed(function () {
 						var active = (objects().length === 0);
 
 						return active;
@@ -52,7 +52,7 @@
 				self.title = title;
 				self.id = id;
 				self.objects = objects;
-				self.isActive = isActive;
+				self.isDisabled = isDisabled;
 				self.needsParentColumn = needsParentColumn;
 			},
 			DatabaseSurvey = function (db, urls) {
@@ -78,7 +78,7 @@
 							$.each(tabs(), function (i, tab) {
 								var title = tab.title(),
 									url = urls[title],
-									actualUrl = url.replace(/databaseSurveyId/i, id());
+									actualUrl = url.replace(/\/0\//i, '/' + id() + '/');
 
 								$.getJSON(actualUrl, function (result, s, x) {
 									$.each(result, function (type, objects) {

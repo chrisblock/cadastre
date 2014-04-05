@@ -20,6 +20,8 @@ namespace Cadastre.Controllers.Api
 			_surveyRepository = surveyRepository;
 		}
 
+		[HttpGet]
+		[Route("api/Surveys", Name = "SurveysApi")]
 		public IQueryable<Survey> Get()
 		{
 			var result = _surveyRepository.Get();
@@ -27,6 +29,8 @@ namespace Cadastre.Controllers.Api
 			return result;
 		}
 
+		[HttpGet]
+		[Route("api/Surveys/{surveyId:int}", Name = "SurveyApi")]
 		public Survey Get(int surveyId)
 		{
 			var result = _surveyRepository.Get(surveyId);
@@ -34,63 +38,62 @@ namespace Cadastre.Controllers.Api
 			return result;
 		}
 
+		[HttpPost]
+		[Route("api/Surveys", Name = "AddSurveyApi")]
 		public bool Post(SurveyRequest request)
 		{
 			var result = false;
 
-			try
+			var stringBuilder = new StringBuilder();
+
+			foreach (var databaseSurveyRequest in request.Databases)
 			{
-				var stringBuilder = new StringBuilder();
+				stringBuilder.AppendFormat("{0},{1},{2}", databaseSurveyRequest.Server, databaseSurveyRequest.Database, databaseSurveyRequest.IsReference);
 
-				foreach (var databaseSurveyRequest in request.Databases)
-				{
-					stringBuilder.AppendFormat("{0},{1},{2}", databaseSurveyRequest.Server, databaseSurveyRequest.Database, databaseSurveyRequest.IsReference);
-
-					stringBuilder.AppendLine();
-				}
-
-				var assemblyUri = new Uri(GetType().Assembly.CodeBase);
-
-				var assemblyPath = assemblyUri.LocalPath;
-
-				var assemblyDirectory = Path.GetDirectoryName(assemblyPath);
-
-				var executablePath = Path.GetFullPath(Path.Combine(assemblyDirectory, "..", "..", "SchemaSurveyor", "bin", "Debug", "SchemaSurveyor.exe"));
-
-				using (var process = new Process())
-				{
-					process.StartInfo = new ProcessStartInfo
-					{
-						FileName = executablePath,
-						Arguments = String.Format("-name=\"{0}\"", request.Name),
-						RedirectStandardInput = true,
-						RedirectStandardOutput = true,
-						UseShellExecute = false
-					};
-
-					process.OutputDataReceived += (sender, args) => Debug.WriteLine(args.Data);
-
-					process.Start();
-
-					process.BeginOutputReadLine();
-
-					process.StandardInput.Write(stringBuilder.ToString());
-
-					process.StandardInput.Close();
-
-					process.WaitForExit();
-
-					if (process.ExitCode == 0)
-					{
-						result = true;
-					}
-
-					process.CancelOutputRead();
-				}
+				stringBuilder.AppendLine();
 			}
-			catch (Exception e)
+
+			var assemblyUri = new Uri(GetType().Assembly.CodeBase);
+
+			var assemblyPath = assemblyUri.LocalPath;
+
+			var assemblyDirectory = Path.GetDirectoryName(assemblyPath);
+
+#if DEBUG
+			var executablePath = Path.GetFullPath(Path.Combine(assemblyDirectory, "..", "..", "SchemaSurveyor", "bin", "Debug", "SchemaSurveyor.exe"));
+#else
+			var executablePath = Path.GetFullPath(Path.Combine(assemblyDirectory, "..", "..", "SchemaSurveyor", "bin", "Release", "SchemaSurveyor.exe"));
+#endif
+
+			using (var process = new Process())
 			{
-				throw;
+				process.StartInfo = new ProcessStartInfo
+				{
+					FileName = executablePath,
+					Arguments = String.Format("-name=\"{0}\"", request.Name),
+					RedirectStandardInput = true,
+					RedirectStandardOutput = true,
+					UseShellExecute = false
+				};
+
+				process.OutputDataReceived += (sender, args) => Debug.WriteLine(args.Data);
+
+				process.Start();
+
+				process.BeginOutputReadLine();
+
+				process.StandardInput.Write(stringBuilder.ToString());
+
+				process.StandardInput.Close();
+
+				process.WaitForExit();
+
+				if (process.ExitCode == 0)
+				{
+					result = true;
+				}
+
+				process.CancelOutputRead();
 			}
 
 			return result;

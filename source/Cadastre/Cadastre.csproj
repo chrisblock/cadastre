@@ -143,6 +143,7 @@
     <Compile Include="Controllers\Api\ServersController.cs" />
     <Compile Include="Controllers\Api\SurveysController.cs" />
     <Compile Include="Controllers\SurveysController.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

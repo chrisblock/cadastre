@@ -50,7 +50,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span data-bind="text: title"></span> <span class="caret"></span></a>
 								<ul class="dropdown-menu" data-bind="foreach: { data: types, as: 'type' }">
-									<li data-bind="css: { disabled: isActive }"><a data-bind="text: title, attr: { href: '#db-' + database.id() + '-' + tab.id() + '-' + type.id() }" data-toggle="tab"></a></li>
+									<li data-bind="css: { disabled: isDisabled }"><a data-bind="text: title, attr: { href: '#db-' + database.id() + '-' + tab.id() + '-' + type.id() }" data-toggle="tab"></a></li>
 								</ul>
 							</li>
 						</ul>
@@ -101,11 +101,11 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		var urls = {
-			Missing: '@Url.HttpRouteUrl("MissingObjectApi", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })',
-			Extra: '@Url.HttpRouteUrl("ExtraObjectApi", new { surveyId = @Model.Id, databaseSurveyId = "databaseSurveyId" })'
+			Missing: '@Url.HttpRouteUrl("MissingObjectsApi", new { surveyId = @Model.Id, databaseSurveyId = 0 })',
+			Extra: '@Url.HttpRouteUrl("ExtraObjectsApi", new { surveyId = @Model.Id, databaseSurveyId = 0 })'
 		};
 
-		cadastre.survey.init(urls, '@Url.HttpRouteUrl("DatabaseSurveyApi", new { surveyId = @Model.Id })', '#survey');
+		cadastre.survey.init(urls, '@Url.HttpRouteUrl("DatabaseSurveysApi", new { surveyId = @Model.Id })', '#survey');
 	});
 </script>
 }
