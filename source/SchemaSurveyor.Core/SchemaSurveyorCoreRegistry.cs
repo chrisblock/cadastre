@@ -1,4 +1,6 @@
-﻿using StructureMap.Configuration.DSL;
+﻿using SchemaSurveyor.Core.Servers;
+
+using StructureMap.Configuration.DSL;
 
 namespace SchemaSurveyor.Core
 {
@@ -12,6 +14,8 @@ namespace SchemaSurveyor.Core
 
 				scan.SingleImplementationsOfInterface();
 				scan.WithDefaultConventions();
+
+				scan.AddAllTypesOf<IServerSource>();
 			});
 		}
 	}

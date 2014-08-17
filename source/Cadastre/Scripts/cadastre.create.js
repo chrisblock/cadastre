@@ -156,8 +156,12 @@
 					};
 
 				$.post(surveyRequestUrl, data).done(function (result, status, jqXHR) {
-					// TODO: show a message or redirect to list of surveys
-					debugger;
+					if (result && result.success) {
+						// yay
+					}
+					else {
+						// boo
+					}
 				});
 
 				return false;

@@ -65,6 +65,7 @@
     <Compile Include="ExtraObjects\ExtraObjectCollection.cs" />
     <Compile Include="ExtraObjects\IExtraObjectRepository.cs" />
     <Compile Include="ExtraObjects\Impl\ExtraObjectRepository.cs" />
+    <Compile Include="MicrosoftSqlServerVersion.cs" />
     <Compile Include="MissingObjects\IMissingObjectRepository.cs" />
     <Compile Include="MissingObjects\Impl\MissingObjectRepository.cs" />
     <Compile Include="MissingObjects\MissingObject.cs" />
@@ -74,6 +75,10 @@
     <Compile Include="SchemaSurveyorCoreRegistry.cs" />
     <Compile Include="Servers\IDatabaseRepository.cs" />
     <Compile Include="Servers\Impl\DatabaseRepository.cs" />
+    <Compile Include="Servers\Impl\ServerRepository.cs" />
+    <Compile Include="Servers\Impl\SqlDataSourceServerSource.cs" />
+    <Compile Include="Servers\IServerRepository.cs" />
+    <Compile Include="Servers\IServerSource.cs" />
     <Compile Include="Surveys\DatabaseSurvey.cs" />
     <Compile Include="Surveys\Impl\SurveyRepository.cs" />
     <Compile Include="Surveys\ISurveyRepository.cs" />

@@ -14,18 +14,11 @@ namespace Cadastre
 		{
 			AreaRegistration.RegisterAllAreas();
 
-			StructureMapConfig.RegisterDependencyResolver();
-
-			GlobalConfiguration.Configure(ConfigureApplication);
+			GlobalConfiguration.Configure(WebApiConfig.Register);
 
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
-		}
-
-		private static void ConfigureApplication(HttpConfiguration configuration)
-		{
-			configuration.MapHttpAttributeRoutes();
 		}
 
 		protected void Application_EndRequest()

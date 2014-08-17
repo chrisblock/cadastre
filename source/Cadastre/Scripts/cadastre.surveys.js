@@ -6,7 +6,7 @@
 
 				self.surveys = surveys;
 
-				self.showSurvey = function(survey, event) {
+				self.showSurvey = function (survey, event) {
 					var url = surveyUrl.replace('0', survey.id);
 
 					document.location.href = url;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchemaSurveyor", "SchemaSurveyor\SchemaSurveyor.csproj", "{FE8B9CF7-8CAA-4023-BC08-1622169CF5B9}"
 EndProject
@@ -60,7 +60,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7AD8CE58-81AF-49A3-A406-62AF859233EB} = {8A446D83-4431-4EB3-943B-B0F72530F557}
 		{A1976089-6834-4EEC-BC46-4540FE597B10} = {8A446D83-4431-4EB3-943B-B0F72530F557}
+		{7AD8CE58-81AF-49A3-A406-62AF859233EB} = {8A446D83-4431-4EB3-943B-B0F72530F557}
 	EndGlobalSection
 EndGlobal

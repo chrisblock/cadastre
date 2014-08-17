@@ -7,10 +7,12 @@ namespace Cadastre.Controllers.Api
 {
 	public class ServersController : ApiController
 	{
+		private readonly IServerRepository _serverRepository;
 		private readonly IDatabaseRepository _databaseRepository;
 
-		public ServersController(IDatabaseRepository databaseRepository)
+		public ServersController(IServerRepository serverRepository, IDatabaseRepository databaseRepository)
 		{
+			_serverRepository = serverRepository;
 			_databaseRepository = databaseRepository;
 		}
 
@@ -18,7 +20,7 @@ namespace Cadastre.Controllers.Api
 		[Route("api/Servers", Name = "ServersApi")]
 		public IEnumerable<string> Get()
 		{
-			var result = _databaseRepository.GetServers();
+			var result = _serverRepository.GetServers();
 
 			return result;
 		}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Text.RegularExpressions;
 
 namespace SchemaSurveyor.Core
 {
@@ -33,11 +32,24 @@ namespace SchemaSurveyor.Core
 				{
 					connection.Open();
 
-					using (var command = connection.CreateCommand("SELECT @@VERSION"))
+					//using (var command = connection.CreateCommand("SELECT @@VERSION"))
+					using (var command = connection.CreateCommand("SELECT SERVERPROPERTY('Edition') AS [Edition], SERVERPROPERTY('ProductVersion') AS [ProductVersion], SERVERPROPERTY('ProductLevel') AS [ProductLevel]"))
 					{
-						var version = command.ExecuteScalar() as string;
+						using (var reader = command.ExecuteReader())
+						{
+							if (reader.Read())
+							{
+								var edition = String.Format("{0}", reader["Edition"]);
+								var version = String.Format("{0}", reader["ProductVersion"]);
+								var level = String.Format("{0}", reader["ProductLevel"]);
 
-						ParseVersion(version);
+
+							}
+
+							reader.Close();
+						}
+
+						//MicrosoftSqlServerVersion.Parse(version);
 					}
 
 					result = true;
@@ -50,21 +62,6 @@ namespace SchemaSurveyor.Core
 			}
 
 			return result;
-		}
-
-		private static void ParseVersion(string version)
-		{
-			var regex = new Regex(@"Microsoft SQL Server (\d{4}) - (\d+\.\d+\.\d+\.\d+) \(([^\)]+)\)");
-
-			var match = regex.Match(version);
-
-			// TODO: parse strings like this:
-			/*
-			Microsoft SQL Server 2012 (SP1) - 11.0.3128.0 (X64) 
-			Dec 28 2012 20:23:12 
-			Copyright (c) Microsoft Corporation
-			Developer Edition (64-bit) on Windows NT 6.1 <X64> (Build 7601: Service Pack 1) (Hypervisor)
-			 */
 		}
 	}
 }

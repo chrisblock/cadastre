@@ -23,15 +23,6 @@ namespace Cadastre.Controllers
 		}
 
 		[HttpGet]
-		[ActionName("Surveys")]
-		public ActionResult Surveys()
-		{
-			var surveys = _surveyRepository.Get();
-
-			return Json(surveys, JsonRequestBehavior.AllowGet);
-		}
-
-		[HttpGet]
 		[ActionName("Survey")]
 		public ActionResult Survey(int surveyId)
 		{
