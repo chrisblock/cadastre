@@ -1,6 +1,6 @@
 ﻿using SchemaSurveyor.Core.Servers;
 
-using StructureMap.Configuration.DSL;
+using StructureMap;
 
 namespace SchemaSurveyor.Core
 {

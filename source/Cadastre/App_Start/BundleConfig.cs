@@ -6,6 +6,13 @@ namespace Cadastre
 	{
 		public static void RegisterBundles(BundleCollection bundles)
 		{
+			RegisterScriptBundles(bundles);
+
+			RegisterStyleBundles(bundles);
+		}
+
+		private static void RegisterScriptBundles(BundleCollection bundles)
+		{
 			bundles.Add(new ScriptBundle("~/bundles/jquery")
 				.Include("~/Scripts/jquery-{version}.js"));
 
@@ -24,8 +31,11 @@ namespace Cadastre
 				.Include("~/Scripts/cadastre.survey.js")
 				.Include("~/Scripts/cadastre.surveys.js")
 				.Include("~/Scripts/cadastre.create.js"));
+		}
 
-			bundles.Add(new StyleBundle("~/Content/css")
+		private static void RegisterStyleBundles(BundleCollection bundles)
+		{
+			bundles.Add(new StyleBundle("~/bundles/css")
 				.Include("~/Content/bootstrap.css")
 				.Include("~/Content/site.css"));
 		}

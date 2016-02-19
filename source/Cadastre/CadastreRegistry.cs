@@ -1,6 +1,6 @@
 ﻿using SchemaSurveyor.Core;
 
-using StructureMap.Configuration.DSL;
+using StructureMap;
 
 namespace Cadastre
 {

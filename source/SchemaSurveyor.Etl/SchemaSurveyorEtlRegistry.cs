@@ -2,7 +2,7 @@
 using SchemaSurveyor.Etl.Surveying;
 using SchemaSurveyor.Etl.Surveying.Impl;
 
-using StructureMap.Configuration.DSL;
+using StructureMap;
 
 namespace SchemaSurveyor.Etl
 {

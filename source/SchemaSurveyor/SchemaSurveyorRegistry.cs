@@ -1,6 +1,6 @@
 ﻿using SchemaSurveyor.Etl;
 
-using StructureMap.Configuration.DSL;
+using StructureMap;
 
 namespace SchemaSurveyor
 {

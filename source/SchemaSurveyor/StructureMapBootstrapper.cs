@@ -2,11 +2,11 @@
 
 namespace SchemaSurveyor
 {
-	public static class StructureMapBootstrapper
+	public static class StructureMapContainerFactory
 	{
-		public static void Bootstrap()
+		public static IContainer Create<TRegistry>() where TRegistry : Registry, new()
 		{
-			ObjectFactory.Initialize(init => init.AddRegistry<SchemaSurveyorRegistry>());
+			return new Container(new TRegistry());
 		}
 	}
 }

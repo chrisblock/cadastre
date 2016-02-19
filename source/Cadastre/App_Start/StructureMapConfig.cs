@@ -9,9 +9,9 @@ namespace Cadastre
 	{
 		public static void RegisterDependencyResolver(HttpConfiguration configuration)
 		{
-			ObjectFactory.Initialize(init => init.AddRegistry<CadastreRegistry>());
+			var container = new Container(new CadastreRegistry());
 
-			var dependencyResolver = new StructureMapDependencyResolver();
+			var dependencyResolver = new StructureMapDependencyResolver(container);
 
 			DependencyResolver.SetResolver(dependencyResolver);
 

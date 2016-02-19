@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 using StructureMap;
 
@@ -9,10 +10,6 @@ namespace Cadastre
 	public class StructureMapDependencyResolver : System.Web.Mvc.IDependencyResolver, System.Web.Http.Dependencies.IDependencyResolver
 	{
 		private readonly IContainer _container;
-
-		public StructureMapDependencyResolver() : this(ObjectFactory.Container)
-		{
-		}
 
 		public StructureMapDependencyResolver(IContainer container)
 		{
@@ -23,13 +20,15 @@ namespace Cadastre
 		{
 			object result;
 
+			var container = GetCurrentContainer();
+
 			if (serviceType.IsInterface || serviceType.IsAbstract)
 			{
-				result = _container.TryGetInstance(serviceType);
+				result = container.TryGetInstance(serviceType);
 			}
 			else
 			{
-				result = _container.GetInstance(serviceType);
+				result = container.GetInstance(serviceType);
 			}
 
 			return result;
@@ -37,7 +36,9 @@ namespace Cadastre
 
 		public IEnumerable<object> GetServices(Type serviceType)
 		{
-			return _container.GetAllInstances(serviceType).Cast<object>();
+			var container = GetCurrentContainer();
+
+			return container.GetAllInstances(serviceType).Cast<object>();
 		}
 
 		public System.Web.Http.Dependencies.IDependencyScope BeginScope()
@@ -45,6 +46,25 @@ namespace Cadastre
 			var container = _container.GetNestedContainer();
 
 			return new StructureMapDependencyResolver(container);
+		}
+
+		private IContainer GetCurrentContainer()
+		{
+			var result = _container;
+
+			var context = HttpContext.Current;
+
+			if (context != null)
+			{
+				var contextContainer = context.Items[StructureMapHttpModule.NestedContainer] as IContainer;
+
+				if (contextContainer != null)
+				{
+					result = contextContainer;
+				}
+			}
+
+			return result;
 		}
 
 		~StructureMapDependencyResolver()
