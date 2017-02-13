@@ -174,6 +174,7 @@
     <Compile Include="Models\SurveyViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StructureMapDependencyResolver.cs" />
+    <Compile Include="StructureMapDependencyScope.cs" />
     <Compile Include="Surveys\Impl\SurveyExecutor.cs" />
     <Compile Include="Surveys\ISurveyExecutor.cs" />
   </ItemGroup>

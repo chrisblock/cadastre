@@ -45,7 +45,7 @@ namespace Cadastre
 		{
 			var container = _container.GetNestedContainer();
 
-			return new StructureMapDependencyResolver(container);
+			return new StructureMapDependencyScope(container);
 		}
 
 		private IContainer GetCurrentContainer()
